@@ -1,0 +1,64 @@
+{
+  "name": "personal-site",
+  "dockerComposeFile": "../compose.yaml",
+  "service": "app",
+  "workspaceFolder": "/app",
+  "remoteUser": "node",
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "npm install",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // --- 1. エディタの基本設定 ---
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.formatOnSave": true,
+        "editor.detectIndentation": false,
+        // --- 2. ファイル末尾のクリーンアップ ---
+        "files.trimTrailingWhitespace": true,
+        "files.trimFinalNewlines": true,
+        "files.insertFinalNewline": true,
+        // --- 3. フォーマッタの指定 ---
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[yaml]": {
+          "editor.defaultFormatter": "redhat.vscode-yaml"
+        },
+        // --- 4. 保存時の自動アクション ---
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        // --- 5. CSS / Tailwind 関連 ---
+        "files.associations": {
+          "*.css": "tailwindcss"
+        },
+        "tailwindCSS.experimental.classRegex": [
+          "class:\\s*?[\"'`]([^\"'`]*).*?,"
+        ],
+        // --- 6. Emmetの有効化 ---
+        "emmet.includeLanguages": {
+          "vue": "html"
+        },
+        // --- 7. 検索・監視からの除外 ---
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/.nuxt": true,
+          "**/.output": true,
+          "**/dist": true
+        },
+        "files.watcherExclude": {
+          "**/node_modules/**": true,
+          "**/.nuxt/**": true,
+          "**/.output/**": true,
+          "**/.git/**": true
+        }
+      },
+      "extensions": [
+        "Vue.volar",
+        "bradlc.vscode-tailwindcss",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "redhat.vscode-yaml"
+      ]
+    }
+  }
+}
