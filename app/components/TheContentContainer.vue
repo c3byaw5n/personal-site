@@ -9,7 +9,7 @@ const { isAnimating } = useCameraState()
       :class="isAnimating ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'"
     >
       <div class="no-scrollbar flex-1 overflow-y-auto p-8 sm:p-12">
-        <div class="prose prose-slate max-w-none text-slate-900">
+        <div class="max-w-none">
           <slot />
         </div>
       </div>
