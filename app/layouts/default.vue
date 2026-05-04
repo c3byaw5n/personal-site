@@ -4,11 +4,7 @@
       <TheExperience />
     </div>
 
-    <nav class="fixed left-0 top-0 z-50 flex w-full justify-center gap-8 p-8">
-      <NuxtLink to="/" class="transition-colors hover:text-pink-500">HOME</NuxtLink>
-      <NuxtLink to="/about" class="transition-colors hover:text-pink-500">ABOUT</NuxtLink>
-      <NuxtLink to="/works" class="transition-colors hover:text-pink-500">WORKS</NuxtLink>
-    </nav>
+    <TheHeader />
 
     <main class="relative z-10 min-h-screen w-full">
       <slot />
