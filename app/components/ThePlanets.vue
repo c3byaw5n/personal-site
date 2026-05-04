@@ -9,8 +9,8 @@ const STAR_SIZE = 0.7
 const FLOAT_SPEED = 1.0
 const FLOAT_AMPLITUDE = 0.15
 
-const ABOUT_STAR_COLOR = '#6a1b9a'
-const WORKS_STAR_COLOR = '#aa00ff'
+const ABOUT_STAR_COLOR = '#ff80ab'
+const WORKS_STAR_COLOR = '#ff80ab'
 
 const TEXTURE_SIZE = 128
 const TEXTURE_CENTER = TEXTURE_SIZE / 2
@@ -34,8 +34,8 @@ const createStarTexture = (): CanvasTexture => {
       TEXTURE_CENTER,
       TEXTURE_CENTER
     )
-    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)')
-    gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.3)')
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.5)')
+    gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.4)')
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)')
 
     context.fillStyle = gradient
