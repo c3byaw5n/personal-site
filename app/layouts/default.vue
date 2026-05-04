@@ -9,6 +9,8 @@
     <main class="relative z-10 min-h-screen w-full">
       <slot />
     </main>
+
+    <TheFooter />
   </div>
 </template>
 
