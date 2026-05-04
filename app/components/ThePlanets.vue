@@ -2,8 +2,8 @@
 import { CanvasTexture } from 'three'
 import type { Sprite } from 'three'
 
-const ABOUT_PLANET_POS: [number, number, number] = [4, 2, 2]
-const WORKS_PLANET_POS: [number, number, number] = [-4, -2, 2]
+const ABOUT_PLANET_POS: [number, number, number] = [3, 2, 2]
+const WORKS_PLANET_POS: [number, number, number] = [-3, -2, 2]
 
 const STAR_SIZE = 0.7
 const FLOAT_SPEED = 1.0
