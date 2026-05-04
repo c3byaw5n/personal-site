@@ -10,8 +10,22 @@
       <NuxtLink to="/works" class="transition-colors hover:text-pink-500">WORKS</NuxtLink>
     </nav>
 
-    <main class="relative z-10 w-full">
+    <main class="relative z-10 min-h-screen w-full">
       <slot />
     </main>
   </div>
 </template>
+
+<style>
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+</style>
