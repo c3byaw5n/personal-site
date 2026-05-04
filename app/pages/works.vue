@@ -1,6 +1,14 @@
 <template>
-  <div class="flex h-[200vh] flex-col items-center justify-center text-slate-800">
-    <h1 class="text-6xl font-bold">WORKS</h1>
-    <p class="mt-4 opacity-60">実績ページテストです。</p>
-  </div>
+  <TheContentContainer>
+    <h1 class="mb-6 text-4xl font-bold">Works</h1>
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div
+        v-for="i in 6"
+        :key="i"
+        class="flex aspect-video items-center justify-center rounded-xl border border-white/10 bg-white/20"
+      >
+        <span class="text-xl font-medium">Project {{ i }}</span>
+      </div>
+    </div>
+  </TheContentContainer>
 </template>
