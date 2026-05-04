@@ -14,7 +14,7 @@ const navItems = [
       to="/"
       class="group flex items-center gap-2"
     >
-      <span class="font-calligraphy text-xl sm:text-2xl font-bold text-fuchsia-950 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm">
+      <span class="text-xl sm:text-2xl font-bold text-fuchsia-950 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm">
         春
       </span>
       <span class="hidden text-xs tracking-[0.2em] text-fuchsia-900/50 sm:block">PERSONAL SITE</span>
