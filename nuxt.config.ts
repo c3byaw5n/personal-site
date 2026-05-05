@@ -4,6 +4,15 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
+  content: {
+    build: {
+      markdown: {
+        highlight: {
+          theme: 'github-dark',
+        },
+      },
+    },
+  },
   compatibilityDate: '2025-07-15',
   css: ['~/assets/css/main.css'],
   devtools: { enabled: true },
@@ -13,13 +22,7 @@ export default defineNuxtConfig({
   },
   vite: {
     optimizeDeps: {
-      include: [
-        'three',
-        '@vue/devtools-core',
-        '@vue/devtools-kit',
-        'gsap',
-        '@tresjs/core',
-      ]
+      include: ['three', '@vue/devtools-core', '@vue/devtools-kit', 'gsap', '@tresjs/core'],
     },
     plugins: [tailwindcss()],
   },
