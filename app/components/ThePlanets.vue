@@ -3,20 +3,20 @@ import { CanvasTexture } from 'three'
 import type { Sprite } from 'three'
 
 const ABOUT_PLANET_POS: [number, number, number] = [3, 2, 2]
-const WORKS_PLANET_POS: [number, number, number] = [-3, -2, 2]
+const BLOG_PLANET_POS: [number, number, number] = [-3, -2, 2]
 
 const STAR_SIZE = 0.7
 const FLOAT_SPEED = 1.0
 const FLOAT_AMPLITUDE = 0.15
 
 const ABOUT_STAR_COLOR = '#ff80ab'
-const WORKS_STAR_COLOR = '#ff80ab'
+const BLOG_STAR_COLOR = '#ff80ab'
 
 const TEXTURE_SIZE = 128
 const TEXTURE_CENTER = TEXTURE_SIZE / 2
 
 const aboutStarRef = shallowRef<Sprite | null>(null)
-const worksStarRef = shallowRef<Sprite | null>(null)
+const blogStarRef = shallowRef<Sprite | null>(null)
 const { onBeforeRender } = useLoop()
 
 const createStarTexture = (): CanvasTexture => {
@@ -51,9 +51,9 @@ onBeforeRender(({ elapsed }) => {
     aboutStarRef.value.position.y =
       ABOUT_PLANET_POS[1] + Math.sin(elapsed * FLOAT_SPEED) * FLOAT_AMPLITUDE
   }
-  if (worksStarRef.value) {
-    worksStarRef.value.position.y =
-      WORKS_PLANET_POS[1] + Math.sin((elapsed + 2) * FLOAT_SPEED) * FLOAT_AMPLITUDE
+  if (blogStarRef.value) {
+    blogStarRef.value.position.y =
+      BLOG_PLANET_POS[1] + Math.sin((elapsed + 2) * FLOAT_SPEED) * FLOAT_AMPLITUDE
   }
 })
 </script>
@@ -68,9 +68,9 @@ onBeforeRender(({ elapsed }) => {
     />
   </TresSprite>
 
-  <TresSprite ref="worksStarRef" :position="WORKS_PLANET_POS" :scale="[STAR_SIZE, STAR_SIZE, 1]">
+  <TresSprite ref="blogStarRef" :position="BLOG_PLANET_POS" :scale="[STAR_SIZE, STAR_SIZE, 1]">
     <TresSpriteMaterial
-      :color="WORKS_STAR_COLOR"
+      :color="BLOG_STAR_COLOR"
       :map="starTexture"
       transparent
       :depth-write="false"
