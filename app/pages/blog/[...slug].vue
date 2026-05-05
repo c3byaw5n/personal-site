@@ -32,7 +32,10 @@ const formatDate = (dateString?: string) => {
 
 <template>
   <TheContentContainer>
-    <article v-if="post" class="mx-auto max-w-3xl pb-20">
+    <article
+      v-if="post"
+      class="mx-auto max-w-4xl rounded-2xl bg-white/80 pb-20 backdrop-blur-md md:px-10 md:pt-2"
+    >
       <header class="mb-16 border-b border-fuchsia-900/10 pb-10 text-center">
         <time class="mb-4 block text-sm font-bold tracking-[0.2em] text-fuchsia-900/60">
           {{ formatDate(post.date) }}
