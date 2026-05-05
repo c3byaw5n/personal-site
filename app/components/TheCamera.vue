@@ -3,9 +3,9 @@ import type { PerspectiveCamera } from 'three'
 import gsap from 'gsap'
 
 const CAMERA_POSITIONS: Record<string, { x: number; y: number; z: number }> = {
-  '/': { x: 0, y: 0, z: 15 },
+  '/': { x: 0, y: 0, z: 18 },
   '/about': { x: 3.5, y: 2.2, z: 4 },
-  '/works': { x: -3.5, y: -2.2, z: 4 },
+  '/blog': { x: -3.5, y: -2.2, z: 4 },
 }
 
 const ANIMATION_DURATION = 2
@@ -18,6 +18,11 @@ const CAMERA_FAR = 1000
 const cameraRef = shallowRef<PerspectiveCamera | null>(null)
 const route = useRoute()
 const { isAnimating } = useCameraState()
+
+const getBasePath = (path?: string) => {
+  if (!path || path === '/') return '/'
+  return `/${path.split('/')[1]}`
+}
 
 const updateCamera = (path: string, isImmediate = false): void => {
   const target = CAMERA_POSITIONS[path] || CAMERA_POSITIONS['/']
@@ -49,13 +54,19 @@ const updateCamera = (path: string, isImmediate = false): void => {
 
 watch(
   () => route.path,
-  (newPath) => {
-    updateCamera(newPath)
+  (newPath, oldPath) => {
+    const newBasePath = getBasePath(newPath)
+    const oldBasePath = getBasePath(oldPath)
+    const isSameSection = newBasePath === oldBasePath
+
+    updateCamera(newBasePath, isSameSection)
   }
 )
 
 onMounted(() => {
-  updateCamera(route.path, true)
+  const basePath = getBasePath(route.path)
+
+  updateCamera(basePath, true)
 })
 </script>
 
