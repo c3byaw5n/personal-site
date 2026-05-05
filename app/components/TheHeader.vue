@@ -2,7 +2,6 @@
 const navItems = [
   { name: 'ABOUT', to: '/about', icon: 'lucide:user' },
   { name: 'BLOG', to: '/blog', icon: 'lucide:pen-tool' },
-  { name: 'WORKS', to: '/works', icon: 'lucide:layout-grid' },
   { name: 'GITHUB', to: 'https://github.com/c3byaw5n', icon: 'lucide:github', external: true },
   { name: 'X', to: 'https://x.com/c3byaw5n', icon: 'ri:twitter-x-line', external: true },
 ]
