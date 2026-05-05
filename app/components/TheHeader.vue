@@ -6,6 +6,20 @@ const navItems = [
   { name: 'GITHUB', to: 'https://github.com/c3byaw5n', icon: 'lucide:github', external: true },
   { name: 'X', to: 'https://x.com/c3byaw5n', icon: 'ri:twitter-x-line', external: true },
 ]
+
+const route = useRoute()
+
+const getBasePath = (path?: string) => {
+  if (!path || path === '/') return '/'
+  return `/${path.split('/')[1]}`
+}
+
+const isActive = (path: string) => {
+  if (path.startsWith('http')) return false
+  const basePath = getBasePath(route.path)
+
+  return basePath === path
+}
 </script>
 
 <template>
@@ -26,15 +40,16 @@ const navItems = [
         <NuxtLink
           :to="item.to"
           :target="item.external ? '_blank' : undefined"
-          class="group relative flex flex-col items-center transition-colors hover:text-pink-600 [&.router-link-active]:text-pink-600!"
+          class="group relative flex flex-col items-center transition-colors hover:text-pink-600 [&.is-active]:text-pink-600!"
+          :class="isActive(item.to) ? 'is-active' : ''"
         >
           <Icon
             :name="item.icon"
-            class="text-xl drop-shadow-sm transition-transform duration-300 group-hover:-translate-y-1 group-[.router-link-active]:-translate-y-1 sm:text-2xl"
+            class="text-xl drop-shadow-sm transition-transform duration-300 group-hover:-translate-y-1 group-[.is-active]:-translate-y-1 sm:text-2xl"
           />
 
           <span
-            class="absolute -bottom-6 scale-75 text-[10px] font-bold opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 group-[.router-link-active]:scale-100 group-[.router-link-active]:opacity-100"
+            class="absolute -bottom-6 scale-75 text-[10px] font-bold opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 group-[.is-active]:scale-100 group-[.is-active]:opacity-100"
           >
             {{ item.name }}
           </span>
