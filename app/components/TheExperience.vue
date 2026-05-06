@@ -1,5 +1,5 @@
 <template>
-  <TresCanvas clear-color="#ffffff" shadows>
+  <TresCanvas clear-color="#ffffff">
     <TheScene />
   </TresCanvas>
 </template>
