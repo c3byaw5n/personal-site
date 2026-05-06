@@ -2,12 +2,50 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-  --font-sans: 'Shippori Mincho', serif;
+  --font-primary: 'Shippori Mincho', serif;
+
+  --animate-rainbow-mobile: rainbow-glow 5s linear infinite;
+  --animate-rainbow-desktop: rainbow-glow 3s linear infinite;
+
+  @keyframes rainbow-glow {
+    0% {
+      filter: drop-shadow(0 0 8px #ff0000);
+      color: #ff0000;
+    }
+    14.3% {
+      filter: drop-shadow(0 0 8px #ff8800);
+      color: #ff8800;
+    }
+    28.6% {
+      filter: drop-shadow(0 0 8px #ffff00);
+      color: #ffff00;
+    }
+    42.9% {
+      filter: drop-shadow(0 0 8px #00ff00);
+      color: #00ff00;
+    }
+    57.1% {
+      filter: drop-shadow(0 0 8px #0088ff);
+      color: #0088ff;
+    }
+    71.4% {
+      filter: drop-shadow(0 0 8px #0000ff);
+      color: #0000ff;
+    }
+    85.7% {
+      filter: drop-shadow(0 0 8px #ff00ff);
+      color: #ff00ff;
+    }
+    100% {
+      filter: drop-shadow(0 0 8px #ff0000);
+      color: #ff0000;
+    }
+  }
 }
 
 @layer base {
   body {
-    @apply text-fuchsia-950;
+    @apply font-primary text-fuchsia-950;
   }
 }
 
@@ -26,6 +64,7 @@
     opacity 0.5s ease,
     transform 0.5s ease;
 }
+
 .page-enter-from,
 .page-leave-to {
   opacity: 0;
