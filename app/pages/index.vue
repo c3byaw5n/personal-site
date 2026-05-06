@@ -1,4 +1,8 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Home',
+})
+
 const { isAnimating } = useCameraState()
 </script>
 
@@ -7,6 +11,6 @@ const { isAnimating } = useCameraState()
     class="pointer-events-none fixed inset-0 z-10 flex items-center justify-center transition-opacity duration-1000 ease-in-out"
     :class="isAnimating ? 'opacity-0' : 'opacity-100'"
   >
-    <h1 class="text-3xl">Personal Site</h1>
+    <h1 class="text-3xl tracking-widest drop-shadow-lg">Personal Site</h1>
   </div>
 </template>
