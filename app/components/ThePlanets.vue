@@ -19,7 +19,9 @@ const aboutStarRef = shallowRef<Sprite | null>(null)
 const blogStarRef = shallowRef<Sprite | null>(null)
 const { onBeforeRender } = useLoop()
 
-const createStarTexture = (): CanvasTexture => {
+const createStarTexture = (): CanvasTexture | null => {
+  if (!import.meta.client) return null
+
   const canvas = document.createElement('canvas')
   canvas.width = TEXTURE_SIZE
   canvas.height = TEXTURE_SIZE
@@ -54,6 +56,12 @@ onBeforeRender(({ elapsed }) => {
   if (blogStarRef.value) {
     blogStarRef.value.position.y =
       BLOG_PLANET_POS[1] + Math.sin((elapsed + 2) * FLOAT_SPEED) * FLOAT_AMPLITUDE
+  }
+})
+
+onUnmounted(() => {
+  if (starTexture) {
+    starTexture.dispose()
   }
 })
 </script>
