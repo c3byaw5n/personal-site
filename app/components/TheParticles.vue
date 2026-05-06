@@ -33,7 +33,9 @@ for (let i = 0; i < PARTICLE_COUNT; i++) {
   colors[i * 3 + 2] = tempColor.b
 }
 
-const createStarTexture = (): CanvasTexture => {
+const createStarTexture = (): CanvasTexture | null => {
+  if (!import.meta.client) return null
+
   const canvas = document.createElement('canvas')
   canvas.width = TEXTURE_SIZE
   canvas.height = TEXTURE_SIZE
@@ -64,6 +66,12 @@ onBeforeRender(({ delta }) => {
   if (pointsRef.value) {
     pointsRef.value.rotation.y += delta * ROTATION_SPEED_Y
     pointsRef.value.rotation.x += delta * ROTATION_SPEED_X
+  }
+})
+
+onUnmounted(() => {
+  if (starTexture) {
+    starTexture.dispose()
   }
 })
 </script>
