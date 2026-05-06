@@ -1,4 +1,9 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Blog (Fragment)',
+  description: '日々の学びや技術的な知見をまとめたブログ記事一覧です。',
+})
+
 const { data: allPosts } = await useAsyncData('blog-list', () =>
   queryCollection('blog')
     .select('path', 'title', 'description', 'date', 'tags')
@@ -14,11 +19,9 @@ const displayCount = ref(INITIAL_DISPLAY_COUNT)
 
 const availableTags = computed(() => {
   if (!allPosts.value) return []
-  const tags = new Set<string>()
-  allPosts.value.forEach((post) => {
-    post.tags?.forEach((tag) => tags.add(tag))
-  })
-  return Array.from(tags)
+
+  const tags = allPosts.value.flatMap((post) => post.tags || [])
+  return Array.from(new Set(tags))
 })
 
 const filteredPosts = computed(() => {
@@ -53,15 +56,15 @@ watch([searchQuery, selectedTag], () => {
   displayCount.value = INITIAL_DISPLAY_COUNT
 })
 
+const dateFormatter = new Intl.DateTimeFormat('ja-JP', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+})
+
 const formatDate = (dateString?: string) => {
   if (!dateString) return ''
-  return new Date(dateString)
-    .toLocaleDateString('ja-JP', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
-    .replace(/\//g, '.')
+  return dateFormatter.format(new Date(dateString)).replace(/\//g, '.')
 }
 </script>
 
@@ -98,6 +101,8 @@ const formatDate = (dateString?: string) => {
           >
             <button
               v-if="!isTagsExpanded"
+              aria-controls="tags-panel"
+              :aria-expanded="isTagsExpanded"
               class="group flex items-center gap-2 rounded-full px-5 py-2.5 text-xs tracking-widest text-fuchsia-900/80 transition-all hover:bg-fuchsia-50 hover:text-fuchsia-900"
               @click="isTagsExpanded = true"
             >
@@ -112,7 +117,7 @@ const formatDate = (dateString?: string) => {
               />
             </button>
 
-            <div v-else class="flex w-full flex-col items-center">
+            <div v-else id="tags-panel" class="flex w-full flex-col items-center">
               <div class="flex flex-wrap justify-center gap-3">
                 <button
                   class="rounded-full border px-4 py-1.5 text-xs tracking-wider transition-colors"
