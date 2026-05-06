@@ -14,19 +14,20 @@ if (!post.value) {
 }
 
 useSeoMeta({
-  title: () => `${post.value?.title} | Fragment`,
+  title: () => post.value?.title,
   description: () => post.value?.description,
+  ogType: 'article',
+})
+
+const dateFormatter = new Intl.DateTimeFormat('ja-JP', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
 })
 
 const formatDate = (dateString?: string) => {
   if (!dateString) return ''
-  return new Date(dateString)
-    .toLocaleDateString('ja-JP', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
-    .replace(/\//g, '.')
+  return dateFormatter.format(new Date(dateString)).replace(/\//g, '.')
 }
 </script>
 
