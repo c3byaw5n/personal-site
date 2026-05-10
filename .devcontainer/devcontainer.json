@@ -5,7 +5,7 @@
   "workspaceFolder": "/app",
   "remoteUser": "node",
   "shutdownAction": "stopCompose",
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "npm ci",
   "customizations": {
     "vscode": {
       "settings": {
