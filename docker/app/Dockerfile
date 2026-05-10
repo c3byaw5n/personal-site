@@ -5,6 +5,9 @@ FROM node:24-bookworm-slim AS base
 
 WORKDIR /app
 
+ENV HOST=0.0.0.0
+ENV PORT=3000
+
 # ==========================================
 # [2] Dev Stage
 # ==========================================
@@ -20,9 +23,26 @@ USER node
 EXPOSE 3000
 
 # ==========================================
-# [3] Prod Stage
+# [3] Build Stage
+# ==========================================
+FROM base AS build
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+# ==========================================
+# [4] Prod Stage
 # ==========================================
 FROM base AS prod
 
+ENV NODE_ENV=production
+
+COPY --from=build /app/.output /app/.output
+
 USER node
 EXPOSE 3000
+
+CMD ["node", ".output/server/index.mjs"]
