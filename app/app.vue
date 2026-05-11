@@ -3,6 +3,7 @@ useHead({
   htmlAttrs: {
     lang: 'ja',
   },
+  link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
 })
 
 useSeoMeta({
