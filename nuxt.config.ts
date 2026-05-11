@@ -23,8 +23,13 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/scripts',
+    '@nuxtjs/sitemap',
     '@tresjs/nuxt',
   ],
+  site: {
+    url: 'https://haruhi-arai.me',
+    name: '春 PERSONAL SITE',
+  },
   typescript: {
     strict: true,
   },
