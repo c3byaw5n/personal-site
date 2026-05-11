@@ -34,4 +34,14 @@ export default defineNuxtConfig({
     },
     plugins: [tailwindcss()],
   },
+  $production: {
+    scripts: {
+      registry: {
+        googleAnalytics: {
+          id: 'G-WG7L80WQ8K',
+          trigger: 'onNuxtReady',
+        },
+      },
+    },
+  },
 })
