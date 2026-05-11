@@ -5,8 +5,13 @@ services:
       context: .
       dockerfile: docker/app/Dockerfile
       target: prod
+    environment:
+      - NODE_OPTIONS=--dns-result-order=ipv4first
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     networks:
-      - personal_site
+      - proxy-network
     restart: always
     deploy:
       resources:
@@ -20,5 +25,6 @@ services:
         max-file: '3'
 
 networks:
-  personal_site:
+  proxy-network:
+    name: personal_site
     external: true
