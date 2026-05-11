@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/icon',
     '@nuxt/image',
+    '@nuxt/scripts',
     '@tresjs/nuxt',
   ],
   typescript: {
