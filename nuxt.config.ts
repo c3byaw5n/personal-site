@@ -44,10 +44,11 @@ export default defineNuxtConfig({
       registry: {
         googleAnalytics: {
           id: 'G-WG7L80WQ8K',
+          bundle: false,
+          proxy: false,
           trigger: 'onNuxtReady',
         },
       },
-      defaultProxyEnabled: false,
     },
   },
 })
