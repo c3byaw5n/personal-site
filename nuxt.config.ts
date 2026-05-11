@@ -47,6 +47,7 @@ export default defineNuxtConfig({
           trigger: 'onNuxtReady',
         },
       },
+      defaultProxyEnabled: false,
     },
   },
 })

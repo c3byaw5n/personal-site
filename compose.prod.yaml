@@ -5,11 +5,6 @@ services:
       context: .
       dockerfile: docker/app/Dockerfile
       target: prod
-    environment:
-      - NODE_OPTIONS=--dns-result-order=ipv4first
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
     networks:
       - proxy-network
     restart: always
