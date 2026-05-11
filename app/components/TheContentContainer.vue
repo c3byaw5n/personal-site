@@ -3,7 +3,9 @@ const { isAnimating } = useCameraState()
 </script>
 
 <template>
-  <div class="pointer-events-none fixed inset-0 z-10 flex items-center justify-center px-4 sm:px-0">
+  <div
+    class="pointer-events-none fixed inset-0 z-10 flex items-center justify-center px-4 py-20 sm:px-0"
+  >
     <section
       class="pointer-events-auto flex h-[80vh] w-full max-w-3xl flex-col overflow-hidden transition-all duration-700 ease-in-out"
       :class="isAnimating ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'"
