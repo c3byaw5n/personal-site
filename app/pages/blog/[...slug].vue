@@ -35,7 +35,7 @@ const formatDate = (dateString?: string) => {
   <TheContentContainer>
     <article
       v-if="post"
-      class="mx-auto max-w-4xl rounded-2xl bg-white/80 pb-20 backdrop-blur-md md:px-10 md:pt-2"
+      class="mx-auto max-w-4xl rounded-2xl bg-white/80 pb-20 backdrop-blur-md md:px-10"
     >
       <header class="mb-16 border-b border-fuchsia-900/10 pb-10 text-center">
         <time class="mb-4 block text-sm font-bold tracking-[0.2em] text-fuchsia-900/60">
@@ -65,7 +65,7 @@ const formatDate = (dateString?: string) => {
         <ContentRenderer :value="post" />
       </div>
 
-      <footer class="mt-24 pt-12 text-center">
+      <footer class="mt-30 text-center">
         <NuxtLink
           to="/blog"
           class="group inline-flex items-center gap-2 text-sm font-bold tracking-widest text-fuchsia-900/60 transition-colors hover:text-fuchsia-900"

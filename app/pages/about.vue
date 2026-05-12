@@ -27,9 +27,9 @@ const learningStack: TechItem[] = [
 
 <template>
   <TheContentContainer>
-    <div class="flex flex-col items-center text-center">
+    <div class="flex flex-col items-center">
       <div
-        class="relative mb-8 h-32 w-32 overflow-hidden rounded-full border-4 border-pink-900/30 shadow-xl"
+        class="mb-8 h-32 w-32 overflow-hidden rounded-full border-4 border-pink-900/30 shadow-xl"
       >
         <NuxtImg
           src="/avatar.png"
@@ -40,9 +40,9 @@ const learningStack: TechItem[] = [
         />
       </div>
 
-      <h1 class="mb-6 text-3xl font-bold tracking-widest">荒井 春陽</h1>
+      <h1 class="mb-4 text-3xl font-bold tracking-widest">荒井 春陽</h1>
 
-      <div class="mb-4 flex items-center gap-2 text-sm tracking-wider text-fuchsia-500">
+      <div class="mb-6 flex items-center gap-2 text-sm tracking-wider text-fuchsia-500">
         <Icon name="lucide:building-2" />
         <a
           href="https://www.terasol.co.jp/"
@@ -54,65 +54,61 @@ const learningStack: TechItem[] = [
         </a>
       </div>
 
-      <div class="mb-8 max-w-2xl text-lg leading-relaxed tracking-widest">
+      <div class="prose mb-8 max-w-2xl text-lg prose-p:text-fuchsia-950/80">
         <p>バックエンドからフロントエンドまで幅広く担当しています。</p>
         <p>実務では現在、C#（ASP.NET Core）とSQL Serverを使用中。</p>
       </div>
 
-      <div class="mb-6 w-full max-w-xl">
-        <h2 class="mb-6 text-xs font-bold tracking-[0.3em] text-fuchsia-500 uppercase">
-          Tech Stack
-        </h2>
-        <div class="flex flex-wrap justify-center gap-6">
-          <div
-            v-for="tech in techStack"
-            :key="tech.name"
-            class="group flex flex-col items-center gap-2"
+      <h2 class="mb-6 text-xs font-bold tracking-[0.3em] text-fuchsia-500 uppercase">Tech Stack</h2>
+
+      <div class="mb-6 flex flex-wrap justify-center gap-6">
+        <div
+          v-for="tech in techStack"
+          :key="tech.name"
+          class="group flex flex-col items-center gap-2"
+        >
+          <Icon
+            v-if="tech.icon"
+            :name="tech.icon"
+            class="text-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] grayscale-0 transition-all duration-500 ease-out group-hover:scale-110 md:grayscale md:group-hover:grayscale-0"
+          />
+          <span
+            class="text-xs font-bold tracking-wider opacity-100 transition-opacity duration-300 group-hover:opacity-100 md:opacity-0"
           >
-            <Icon
-              v-if="tech.icon"
-              :name="tech.icon"
-              class="text-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] grayscale-0 transition-all duration-500 ease-out group-hover:scale-110 md:grayscale md:group-hover:grayscale-0"
-            />
-            <span
-              class="text-xs font-bold tracking-wider opacity-100 transition-opacity duration-300 group-hover:opacity-100 md:opacity-0"
-            >
-              {{ tech.name }}
-            </span>
-          </div>
+            {{ tech.name }}
+          </span>
         </div>
       </div>
 
-      <div class="w-full max-w-xl">
-        <h2 class="mb-6 text-xs font-bold tracking-[0.3em] text-fuchsia-500 uppercase">
-          Currently Learning
-        </h2>
-        <div class="flex flex-wrap justify-center gap-8">
-          <div
-            v-for="tech in learningStack"
-            :key="tech.name"
-            class="group flex flex-col items-center gap-3"
-          >
-            <Icon
-              v-if="!tech.isSpecial && tech.icon"
-              :name="tech.icon"
-              class="text-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] grayscale-0 transition-all duration-500 ease-out group-hover:scale-110 md:grayscale md:group-hover:grayscale-0"
-            />
+      <h2 class="mb-6 text-xs font-bold tracking-[0.3em] text-fuchsia-500 uppercase">
+        Currently Learning
+      </h2>
 
-            <div v-else class="relative flex h-7.5 items-center justify-center">
-              <span
-                class="animate-rainbow-mobile text-3xl font-bold transition-all duration-500 ease-in-out group-hover:scale-125 md:animate-none md:grayscale md:group-hover:animate-rainbow-desktop"
-              >
-                あ
-              </span>
-            </div>
+      <div class="flex flex-wrap justify-center gap-6">
+        <div
+          v-for="tech in learningStack"
+          :key="tech.name"
+          class="group flex flex-col items-center gap-2"
+        >
+          <Icon
+            v-if="!tech.isSpecial && tech.icon"
+            :name="tech.icon"
+            class="text-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.1)] grayscale-0 transition-all duration-500 ease-out group-hover:scale-110 md:grayscale md:group-hover:grayscale-0"
+          />
 
+          <div v-else class="flex h-7.5 items-center justify-center">
             <span
-              class="text-xs font-bold tracking-wider opacity-100 transition-opacity duration-300 group-hover:opacity-100 md:opacity-0"
+              class="-mt-px animate-rainbow-mobile text-3xl font-bold transition-all duration-500 ease-in-out group-hover:scale-110 md:animate-none md:grayscale md:group-hover:animate-rainbow-desktop"
             >
-              {{ tech.name }}
+              あ
             </span>
           </div>
+
+          <span
+            class="text-xs font-bold tracking-wider opacity-100 transition-opacity duration-300 group-hover:opacity-100 md:opacity-0"
+          >
+            {{ tech.name }}
+          </span>
         </div>
       </div>
     </div>

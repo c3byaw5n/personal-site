@@ -29,7 +29,7 @@ const isActive = (path: string): boolean => {
 </script>
 
 <template>
-  <header class="fixed top-0 left-0 z-50 flex w-full items-center justify-between p-6 sm:p-10">
+  <header class="z-50 flex items-center justify-between p-6 sm:p-10">
     <NuxtLink to="/" class="group flex items-center gap-2">
       <span
         class="text-xl font-bold drop-shadow-sm transition-transform duration-300 group-hover:scale-110 sm:text-2xl"

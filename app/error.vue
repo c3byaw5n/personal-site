@@ -14,8 +14,8 @@ const handleError = () => clearError({ redirect: '/' })
 <template>
   <NuxtLayout>
     <TheContentContainer>
-      <div class="flex flex-col items-center text-center">
-        <div class="relative mb-12 flex h-32 w-32 items-center justify-center">
+      <div class="flex flex-col items-center">
+        <div class="mb-12 flex h-32 w-32 items-center justify-center">
           <Icon name="lucide:alert-circle" class="text-6xl text-fuchsia-500 opacity-80" />
         </div>
 
@@ -33,7 +33,7 @@ const handleError = () => clearError({ redirect: '/' })
         </div>
 
         <button
-          class="group inline-flex items-center gap-2 text-sm font-bold tracking-widest text-fuchsia-900/60 transition-colors hover:text-fuchsia-900"
+          class="group flex cursor-pointer items-center gap-2 rounded-full px-8 py-3 text-sm font-bold tracking-widest text-fuchsia-900/60 transition-colors hover:bg-fuchsia-50 hover:text-fuchsia-900"
           @click="handleError"
         >
           <Icon name="lucide:arrow-left" class="transition-transform group-hover:-translate-x-1" />
