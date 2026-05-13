@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   ],
   site: {
     url: 'https://haruhi-arai.me',
-    name: '春 PERSONAL SITE',
+    name: '荒井 春陽',
   },
   typescript: {
     strict: true,

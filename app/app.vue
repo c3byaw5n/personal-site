@@ -1,4 +1,11 @@
 <script setup lang="ts">
+const url = useRequestURL()
+const siteConfig = useSiteConfig()
+
+const siteName = siteConfig.name
+const seoDescription = `${siteName}のポートフォリオ兼技術ブログ。エンジニアとしての日々の開発記録を発信しています。`
+const siteUrl = siteConfig.url
+
 useHead({
   htmlAttrs: {
     lang: 'ja',
@@ -7,21 +14,23 @@ useHead({
 })
 
 useSeoMeta({
+  author: siteName,
+
   titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} | 春 PERSONAL SITE` : '春 PERSONAL SITE'
+    return titleChunk ? `${titleChunk} | ${siteName}` : siteName
   },
-  description: '荒井 春陽のパーソナルサイト。エンジニアです。',
+  description: seoDescription,
 
-  ogTitle: '春 PERSONAL SITE',
-  ogDescription: '荒井 春陽のパーソナルサイト。エンジニアです。',
-  ogImage: '/og-image.png',
-  ogUrl: 'https://haruhi-arai.me',
+  ogTitle: siteName,
+  ogDescription: seoDescription,
   ogType: 'website',
+  ogUrl: url.href,
+  ogImage: `${siteUrl}/og-image.png`,
 
+  twitterTitle: siteName,
+  twitterDescription: seoDescription,
+  twitterImage: `${siteUrl}/og-image.png`,
   twitterCard: 'summary_large_image',
-  twitterTitle: '春 PERSONAL SITE',
-  twitterDescription: '荒井 春陽のパーソナルサイト。エンジニアです。',
-  twitterImage: '/og-image.png',
 })
 </script>
 

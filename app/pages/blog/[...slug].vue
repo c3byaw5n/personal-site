@@ -13,10 +13,20 @@ if (!post.value) {
   })
 }
 
+const siteConfig = useSiteConfig()
+
+const siteName = siteConfig.name
+
 useSeoMeta({
   title: () => post.value?.title,
   description: () => post.value?.description,
+
+  ogTitle: () => (post.value?.title ? `${post.value.title} | ${siteName}` : siteName),
+  ogDescription: () => post.value?.description,
   ogType: 'article',
+
+  twitterTitle: () => (post.value?.title ? `${post.value.title} | ${siteName}` : siteName),
+  twitterDescription: () => post.value?.description,
 })
 
 const dateFormatter = new Intl.DateTimeFormat('ja-JP', {

@@ -1,7 +1,20 @@
 <script setup lang="ts">
+const siteConfig = useSiteConfig()
+
+const pageTitle = 'Blog'
+const siteName = siteConfig.name
+const fullTitle = `${pageTitle} | ${siteName}`
+const seoDescription = '日々の学びや技術的な知見をまとめたブログ記事一覧です。'
+
 useSeoMeta({
-  title: 'Blog (Fragment)',
-  description: '日々の学びや技術的な知見をまとめたブログ記事一覧です。',
+  title: pageTitle,
+  description: seoDescription,
+
+  ogTitle: fullTitle,
+  ogDescription: seoDescription,
+
+  twitterTitle: fullTitle,
+  twitterDescription: seoDescription,
 })
 
 const { data: allPosts } = await useAsyncData('blog-list', () =>
@@ -49,7 +62,7 @@ const displayedPosts = computed(() => {
 const hasMore = computed(() => displayCount.value < filteredPosts.value.length)
 
 const loadMore = () => {
-  displayCount.value += 10
+  displayCount.value += INITIAL_DISPLAY_COUNT
 }
 
 watch([searchQuery, selectedTag], () => {
@@ -71,7 +84,7 @@ const formatDate = (dateString?: string) => {
 <template>
   <TheContentContainer>
     <div class="flex flex-col items-center">
-      <h1 class="mb-8 text-3xl tracking-widest text-fuchsia-950 md:text-4xl">Fragment</h1>
+      <h1 class="mb-8 text-3xl tracking-widest text-fuchsia-950 md:text-4xl">{{ pageTitle }}</h1>
 
       <div class="relative mb-3 w-full max-w-96">
         <Icon
