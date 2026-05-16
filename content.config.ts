@@ -21,5 +21,20 @@ export default defineContentConfig({
         }),
       }),
     }),
+    works: defineCollection({
+      type: 'data',
+      source: 'works.yaml',
+      schema: z.object({
+        works: z.array(
+          z.object({
+            title: z.string(),
+            description: z.string(),
+            image: z.string(),
+            github: z.string().optional(),
+            url: z.string().optional(),
+          })
+        ),
+      }),
+    }),
   },
 })

@@ -1,0 +1,11 @@
+works:
+  - title: "Personal Site"
+    description: "現在のポートフォリオ兼技術ブログサイト。Nuxt 4、Three.js、GSAPを活用し、WebGLによる没入感のあるオープニングアニメーションを実装しています。アクセシビリティとパフォーマンスの最適化にもこだわりました。"
+    image: "/og-image.png"
+    github: "https://github.com/c3byaw5n/personal-site"
+    url: "https://haruhi-arai.me"
+
+  - title: "Sample Project 2"
+    description: "これはダミーのプロジェクトデータです。奇数・偶数によるジグザグレイアウト（レスポンシブ対応）の表示テスト用に配置しています。PCでは画像が右側に、スマホでは縦積みに切り替わります。"
+    image: "/og-image.png"
+    github: "https://github.com/c3byaw5n/dummy-repo"
