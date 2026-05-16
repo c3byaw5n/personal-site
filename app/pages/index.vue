@@ -1,21 +1,6 @@
 <script setup lang="ts">
-const siteConfig = useSiteConfig()
-
-const pageTitle = 'About'
-const siteName = siteConfig.name
-const seoDescription = `${siteName}の簡単な自己紹介、技術スタックの紹介です。`
-const fullTitle = `${pageTitle} | ${siteName}`
-
 useSeoMeta({
-  title: pageTitle,
-  description: seoDescription,
-
-  ogTitle: fullTitle,
-  ogDescription: seoDescription,
   ogType: 'profile',
-
-  twitterTitle: fullTitle,
-  twitterDescription: seoDescription,
 })
 
 interface TechItem {
