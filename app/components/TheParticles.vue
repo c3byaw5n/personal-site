@@ -132,6 +132,16 @@ onBeforeRender(({ elapsed, delta }) => {
     pointsRef.value.rotation.x += delta * ROTATION_SPEED_X
   }
 })
+
+onUnmounted(() => {
+  if (materialRef.value) {
+    materialRef.value.dispose()
+  }
+
+  if (pointsRef.value?.geometry) {
+    pointsRef.value.geometry.dispose()
+  }
+})
 </script>
 
 <template>
