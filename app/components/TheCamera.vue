@@ -20,6 +20,7 @@ const CAMERA_TARGET = new Vector3(0, 0, 0)
 const cameraRef = shallowRef<PerspectiveCamera | null>(null)
 const route = useRoute()
 const { startAnimating, stopAnimating } = useCameraState()
+const { isOpeningComplete, isOpeningAnimating } = useAppState()
 
 let currentTween: gsap.core.Tween | null = null
 
@@ -74,10 +75,39 @@ watch(
   }
 )
 
+watch(isOpeningAnimating, (isAnimating) => {
+  if (isAnimating && cameraRef.value) {
+    const target = CAMERA_POSITIONS['/'] || { x: 0, y: 0, z: 18 }
+
+    startAnimating()
+    currentTween = gsap.to(cameraRef.value.position, {
+      x: target.x,
+      y: target.y,
+      z: target.z,
+      duration: 2.5,
+      ease: 'power3.inOut',
+      onUpdate: () => {
+        cameraRef.value?.lookAt(CAMERA_TARGET)
+      },
+      onComplete: () => {
+        stopAnimating()
+        currentTween = null
+      },
+    })
+  }
+})
+
 onMounted(() => {
   const basePath = getBasePath(route.path)
 
-  updateCamera(basePath, true)
+  if (!isOpeningComplete.value && basePath === '/') {
+    if (cameraRef.value) {
+      cameraRef.value.position.set(0, 0, 40)
+      cameraRef.value.lookAt(CAMERA_TARGET)
+    }
+  } else {
+    updateCamera(basePath, true)
+  }
 })
 
 onUnmounted(() => {
