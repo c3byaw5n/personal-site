@@ -32,6 +32,13 @@ useSeoMeta({
   twitterImage: `${siteUrl}/og-image.png`,
   twitterCard: 'summary_large_image',
 })
+
+const route = useRoute()
+const { setOpeningComplete } = useAppState()
+
+if (route.path !== '/') {
+  setOpeningComplete(true)
+}
 </script>
 
 <template>
