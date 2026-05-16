@@ -8,54 +8,75 @@ const CLUSTER_RADIUS = 1.0
 const SPREAD_RADIUS = 50.0
 const PARTICLE_BASE_SIZE = 50.0
 
-const ROTATION_SPEED_Y = 0.05
-const ROTATION_SPEED_X = 0.02
+const ROTATION_SPEED_Y = 0.03
+const ROTATION_SPEED_X = 0.01
 
 const COLOR_START = new Color('#ff80ab')
 const COLOR_END = new Color('#c51162')
+
+const NOISE_FREQUENCY = 5.0
+const NOISE_AMPLITUDE = 0.15
+
+interface ParticleUniforms {
+  uTime: { value: number }
+  uProgress: { value: number }
+  uSize: { value: number }
+  uNoiseFreq: { value: number }
+  uNoiseAmp: { value: number }
+  [key: string]: { value: number }
+}
+
+const generateParticleData = () => {
+  const positions = new Float32Array(PARTICLE_COUNT * 3)
+  const initialPositions = new Float32Array(PARTICLE_COUNT * 3)
+  const colors = new Float32Array(PARTICLE_COUNT * 3)
+  const tempColor = new Color()
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const i3 = i * 3
+
+    positions[i3] = (Math.random() - 0.5) * SPREAD_RADIUS
+    positions[i3 + 1] = (Math.random() - 0.5) * SPREAD_RADIUS
+    positions[i3 + 2] = (Math.random() - 0.5) * SPREAD_RADIUS
+
+    const phi = Math.acos(-1 + (2 * i) / PARTICLE_COUNT)
+    const theta = Math.sqrt(PARTICLE_COUNT * Math.PI) * phi
+    const r = CLUSTER_RADIUS * Math.cbrt(Math.random())
+
+    initialPositions[i3] = r * Math.sin(phi) * Math.cos(theta)
+    initialPositions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta)
+    initialPositions[i3 + 2] = r * Math.cos(phi)
+
+    tempColor.copy(COLOR_START).lerp(COLOR_END, Math.random())
+    colors[i3] = tempColor.r
+    colors[i3 + 1] = tempColor.g
+    colors[i3 + 2] = tempColor.b
+  }
+
+  return { positions, initialPositions, colors }
+}
 
 const pointsRef = shallowRef<Points | null>(null)
 const materialRef = shallowRef<ShaderMaterial | null>(null)
 
 const { onBeforeRender } = useLoop()
 const { isOpeningComplete, isOpeningAnimating } = useAppState()
+const { positions, initialPositions, colors } = generateParticleData()
 
-const positions = new Float32Array(PARTICLE_COUNT * 3)
-const initialPositions = new Float32Array(PARTICLE_COUNT * 3)
-const colors = new Float32Array(PARTICLE_COUNT * 3)
-const tempColor = new Color()
-
-for (let i = 0; i < PARTICLE_COUNT; i++) {
-  const i3 = i * 3
-
-  positions[i3] = (Math.random() - 0.5) * SPREAD_RADIUS
-  positions[i3 + 1] = (Math.random() - 0.5) * SPREAD_RADIUS
-  positions[i3 + 2] = (Math.random() - 0.5) * SPREAD_RADIUS
-
-  const phi = Math.acos(-1 + (2 * i) / PARTICLE_COUNT)
-  const theta = Math.sqrt(PARTICLE_COUNT * Math.PI) * phi
-  const r = CLUSTER_RADIUS * Math.cbrt(Math.random())
-
-  initialPositions[i3] = r * Math.sin(phi) * Math.cos(theta)
-  initialPositions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta)
-  initialPositions[i3 + 2] = r * Math.cos(phi)
-
-  tempColor.copy(COLOR_START).lerp(COLOR_END, Math.random())
-  colors[i3] = tempColor.r
-  colors[i3 + 1] = tempColor.g
-  colors[i3 + 2] = tempColor.b
-}
-
-const shaderUniforms = {
+const shaderUniforms: ParticleUniforms = {
   uTime: { value: 0 },
   uProgress: { value: isOpeningComplete.value ? 1.0 : 0.0 },
   uSize: { value: PARTICLE_BASE_SIZE },
+  uNoiseFreq: { value: NOISE_FREQUENCY },
+  uNoiseAmp: { value: NOISE_AMPLITUDE },
 }
 
 const vertexShader = `
   uniform float uTime;
   uniform float uProgress;
   uniform float uSize;
+  uniform float uNoiseFreq;
+  uniform float uNoiseAmp;
 
   attribute vec3 aInitialPosition;
   attribute vec3 color;
@@ -66,7 +87,7 @@ const vertexShader = `
     vColor = color;
 
     vec3 posInit = aInitialPosition;
-    float noise = sin(posInit.x * 5.0 + uTime * 2.0) * cos(posInit.y * 5.0 + uTime * 2.0) * 0.15;
+    float noise = sin(posInit.x * uNoiseFreq + uTime * 2.0) * cos(posInit.y * uNoiseFreq + uTime * 2.0) * uNoiseAmp;
     posInit += normalize(posInit) * noise;
 
     vec3 finalPos = mix(posInit, position, uProgress);
