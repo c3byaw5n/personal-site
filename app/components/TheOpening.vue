@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import gsap from 'gsap'
 
+const ANIMATION_SCALE = 50
+const ANIMATION_DURATION = 1.5
+
 const containerRef = shallowRef<HTMLElement | null>(null)
 const { isOpeningAnimating, setOpeningAnimating, setOpeningComplete } = useAppState()
+
+const finalizeOpening = (): void => {
+  setOpeningComplete(true)
+  setOpeningAnimating(false)
+}
 
 const handleInteraction = (): void => {
   if (isOpeningAnimating.value) return
@@ -11,19 +19,14 @@ const handleInteraction = (): void => {
 
   if (containerRef.value) {
     gsap.to(containerRef.value, {
-      scale: 50,
+      scale: ANIMATION_SCALE,
       opacity: 0,
-      duration: 1.5,
+      duration: ANIMATION_DURATION,
       ease: 'power2.in',
-      onComplete: () => {
-        setOpeningComplete(true)
-        setOpeningAnimating(false)
-      },
+      onComplete: finalizeOpening,
     })
   } else {
-    // フォールバック
-    setOpeningComplete(true)
-    setOpeningAnimating(false)
+    finalizeOpening()
   }
 }
 </script>
