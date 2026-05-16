@@ -11,8 +11,8 @@ export const useAppState = () => {
   }
 
   return {
-    isOpeningComplete,
-    isOpeningAnimating,
+    isOpeningComplete: readonly(isOpeningComplete),
+    isOpeningAnimating: readonly(isOpeningAnimating),
     setOpeningComplete,
     setOpeningAnimating,
   }
