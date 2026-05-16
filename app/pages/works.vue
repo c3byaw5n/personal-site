@@ -18,27 +18,17 @@ useSeoMeta({
   twitterDescription: seoDescription,
 })
 
-const { data: worksData, error } = await useAsyncData('works', () =>
-  queryCollection('works').first()
-)
+const { data: worksData } = await useAsyncData('works', () => queryCollection('works').first())
 
 const works = computed(() => worksData.value?.works || [])
 </script>
 
 <template>
   <TheContentContainer>
-    <div class="mb-12 flex flex-col items-center">
-      <h1 class="mb-16 text-3xl font-bold tracking-widest uppercase">Works</h1>
+    <div class="flex flex-col items-center">
+      <h1 class="mb-16 text-3xl tracking-widest text-fuchsia-950 md:text-4xl">{{ pageTitle }}</h1>
 
-      <div
-        v-if="error"
-        class="rounded-lg border border-red-500/30 bg-red-500/10 p-6 text-center text-red-500"
-      >
-        <p>プロジェクトデータの読み込みに失敗しました。</p>
-        <p class="text-sm opacity-70">しばらく経ってから再度アクセスしてください。</p>
-      </div>
-
-      <div v-else class="flex w-full max-w-5xl flex-col gap-16 md:gap-24">
+      <div v-if="works.length > 0" class="flex w-full max-w-5xl flex-col gap-16 md:gap-24">
         <article
           v-for="work in works"
           :key="work.title"
@@ -52,7 +42,7 @@ const works = computed(() => worksData.value?.works || [])
               :alt="work.title"
               format="webp"
               loading="lazy"
-              class="aspect-video w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              class="pointer-events-none aspect-video w-full object-cover transition-transform duration-700 ease-out select-none group-hover:scale-105"
             />
           </div>
 
@@ -88,6 +78,10 @@ const works = computed(() => worksData.value?.works || [])
             </div>
           </div>
         </article>
+      </div>
+
+      <div v-else class="py-20 tracking-widest text-fuchsia-900">
+        プロジェクトが見つかりませんでした。
       </div>
     </div>
   </TheContentContainer>
