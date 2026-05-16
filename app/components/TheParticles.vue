@@ -8,7 +8,7 @@ const CLUSTER_RADIUS = 1.0
 const SPREAD_RADIUS = 50.0
 const PARTICLE_BASE_SIZE = 50.0
 
-const ROTATION_SPEED_Y = 0.03
+const ROTATION_SPEED_Y = 0.02
 const ROTATION_SPEED_X = 0.01
 
 const COLOR_START = new Color('#ff80ab')

@@ -5,8 +5,8 @@ import gsap from 'gsap'
 
 const CAMERA_POSITIONS: Record<string, { x: number; y: number; z: number }> = {
   '/': { x: 0, y: 0, z: 18 },
-  '/blog': { x: -18, y: -4, z: 10 },
-  '/works': { x: 18, y: 5, z: 12 },
+  '/blog': { x: -32, y: -19, z: 10 },
+  '/works': { x: 36, y: 22, z: 12 },
 }
 
 const ANIMATION_DURATION = 2.0
