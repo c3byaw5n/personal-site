@@ -29,6 +29,31 @@ const handleInteraction = (): void => {
     finalizeOpening()
   }
 }
+
+const handleGlobalKeydown = (event: KeyboardEvent) => {
+  if (isOpeningAnimating.value) return
+
+  if (event.key === 'Enter') {
+    event.preventDefault()
+    handleInteraction()
+  }
+
+  if (event.key === 'Tab') {
+    event.preventDefault()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleGlobalKeydown)
+
+  if (containerRef.value) {
+    containerRef.value.focus()
+  }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleGlobalKeydown)
+})
 </script>
 
 <template>
@@ -40,12 +65,10 @@ const handleInteraction = (): void => {
     class="fixed inset-0 z-50 flex cursor-pointer flex-col items-center justify-center focus:outline-none"
     :class="isOpeningAnimating ? 'pointer-events-none' : ''"
     @click="handleInteraction"
-    @keydown.enter="handleInteraction"
     @touchstart.passive="handleInteraction"
   >
-    <h1 class="text-4xl tracking-widest drop-shadow-lg">Personal Site</h1>
     <p
-      class="mt-8 text-xs tracking-[0.3em] text-fuchsia-700/70 md:text-sm"
+      class="mt-20 text-xs tracking-[0.3em] text-fuchsia-700/70 md:mt-30 md:text-sm"
       :class="{ 'animate-pulse': !isOpeningAnimating }"
     >
       CLICK, TAP OR PRESS ENTER
