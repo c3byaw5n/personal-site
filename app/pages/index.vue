@@ -108,7 +108,7 @@ const { isOpeningComplete } = useAppState()
 
               <div v-else class="flex h-7.5 items-center justify-center">
                 <span
-                  class="-mt-px animate-rainbow-mobile text-3xl font-bold transition-all duration-500 ease-in-out group-hover:scale-110 md:animate-none md:grayscale md:group-hover:animate-rainbow-desktop"
+                  class="-mt-px animate-rainbow-mobile text-3xl font-bold transition-all duration-500 ease-in-out select-none group-hover:scale-110 md:animate-none md:grayscale md:group-hover:animate-rainbow-desktop"
                 >
                   あ
                 </span>
