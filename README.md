@@ -11,4 +11,5 @@
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **Source Code:** [MIT License](LICENSE)
+- **Blog Content & Media:** [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
