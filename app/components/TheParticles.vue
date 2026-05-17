@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Color, NormalBlending } from 'three'
-import type { Points, ShaderMaterial } from 'three'
+import type { Points, ShaderMaterial, IUniform } from 'three'
 import gsap from 'gsap'
 
 const PARTICLE_COUNT = 10000
@@ -17,13 +17,54 @@ const COLOR_END = new Color('#c51162')
 const NOISE_FREQUENCY = 5.0
 const NOISE_AMPLITUDE = 0.15
 
+const VERTEX_SHADER = `
+  uniform float uTime;
+  uniform float uProgress;
+  uniform float uSize;
+  uniform float uNoiseFreq;
+  uniform float uNoiseAmp;
+
+  attribute vec3 aInitialPosition;
+  attribute vec3 color;
+
+  varying vec3 vColor;
+
+  void main() {
+    vColor = color;
+
+    vec3 posInit = aInitialPosition;
+    float noise = sin(posInit.x * uNoiseFreq + uTime * 2.0) * cos(posInit.y * uNoiseFreq + uTime * 2.0) * uNoiseAmp;
+    posInit += normalize(posInit) * noise;
+
+    vec3 finalPos = mix(posInit, position, uProgress);
+
+    vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
+    gl_Position = projectionMatrix * mvPosition;
+
+    gl_PointSize = uSize * (1.0 / -mvPosition.z);
+  }
+`
+
+const FRAGMENT_SHADER = `
+  varying vec3 vColor;
+
+  void main() {
+    float dist = distance(gl_PointCoord, vec2(0.5));
+    if (dist > 0.5) discard;
+
+    float alpha = smoothstep(0.5, 0.1, dist);
+
+    gl_FragColor = vec4(vColor, alpha);
+  }
+`
+
 interface ParticleUniforms {
-  uTime: { value: number }
-  uProgress: { value: number }
-  uSize: { value: number }
-  uNoiseFreq: { value: number }
-  uNoiseAmp: { value: number }
-  [key: string]: { value: number }
+  uTime: IUniform<number>
+  uProgress: IUniform<number>
+  uSize: IUniform<number>
+  uNoiseFreq: IUniform<number>
+  uNoiseAmp: IUniform<number>
+  [key: string]: IUniform<number>
 }
 
 const generateParticleData = () => {
@@ -71,47 +112,6 @@ const shaderUniforms: ParticleUniforms = {
   uNoiseAmp: { value: NOISE_AMPLITUDE },
 }
 
-const vertexShader = `
-  uniform float uTime;
-  uniform float uProgress;
-  uniform float uSize;
-  uniform float uNoiseFreq;
-  uniform float uNoiseAmp;
-
-  attribute vec3 aInitialPosition;
-  attribute vec3 color;
-
-  varying vec3 vColor;
-
-  void main() {
-    vColor = color;
-
-    vec3 posInit = aInitialPosition;
-    float noise = sin(posInit.x * uNoiseFreq + uTime * 2.0) * cos(posInit.y * uNoiseFreq + uTime * 2.0) * uNoiseAmp;
-    posInit += normalize(posInit) * noise;
-
-    vec3 finalPos = mix(posInit, position, uProgress);
-
-    vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
-    gl_Position = projectionMatrix * mvPosition;
-
-    gl_PointSize = uSize * (1.0 / -mvPosition.z);
-  }
-`
-
-const fragmentShader = `
-  varying vec3 vColor;
-
-  void main() {
-    float dist = distance(gl_PointCoord, vec2(0.5));
-    if (dist > 0.5) discard;
-
-    float alpha = smoothstep(0.5, 0.1, dist);
-
-    gl_FragColor = vec4(vColor, alpha);
-  }
-`
-
 watch(isOpeningAnimating, (isAnimating) => {
   if (isAnimating && materialRef.value) {
     gsap.to(shaderUniforms.uProgress, {
@@ -134,13 +134,8 @@ onBeforeRender(({ elapsed, delta }) => {
 })
 
 onUnmounted(() => {
-  if (materialRef.value) {
-    materialRef.value.dispose()
-  }
-
-  if (pointsRef.value?.geometry) {
-    pointsRef.value.geometry.dispose()
-  }
+  materialRef.value?.dispose()
+  pointsRef.value?.geometry?.dispose()
 })
 </script>
 
@@ -152,8 +147,8 @@ onUnmounted(() => {
 
     <TresShaderMaterial
       ref="materialRef"
-      :vertex-shader="vertexShader"
-      :fragment-shader="fragmentShader"
+      :vertex-shader="VERTEX_SHADER"
+      :fragment-shader="FRAGMENT_SHADER"
       :uniforms="shaderUniforms"
       transparent
       :depth-write="false"
