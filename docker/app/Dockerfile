@@ -40,7 +40,8 @@ FROM base AS prod
 
 ENV NODE_ENV=production
 
-COPY --from=build /app/.output /app/.output
+RUN chown node:node /app
+COPY --chown=node:node --from=build /app/.output /app/.output
 
 USER node
 EXPOSE 3000
