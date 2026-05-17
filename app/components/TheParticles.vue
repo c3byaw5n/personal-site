@@ -3,7 +3,7 @@ import { Color, NormalBlending } from 'three'
 import type { Points, ShaderMaterial, IUniform } from 'three'
 import gsap from 'gsap'
 
-const PARTICLE_COUNT = 10000
+const PARTICLE_COUNT = 5000
 const SPREAD_RADIUS = 50.0
 const PARTICLE_BASE_SIZE = 50.0
 
