@@ -11,11 +11,17 @@ const PARTICLE_BASE_SIZE = 50.0
 const ROTATION_SPEED_Y = 0.02
 const ROTATION_SPEED_X = 0.01
 
-const COLOR_START = new Color('#ff80ab')
-const COLOR_END = new Color('#c51162')
-
 const NOISE_FREQUENCY = 5.0
 const NOISE_AMPLITUDE = 0.15
+
+const DEFAULT_COLORS = { start: '#ff80ab', end: '#c51162' }
+const PAGE_COLORS: Record<string, { start: string; end: string }> = {
+  '/': DEFAULT_COLORS,
+  '/blog': { start: '#80d8ff', end: '#0091ea' },
+  '/works': { start: '#b9f6ca', end: '#00c853' },
+}
+
+const ANIMATION_DURATION = 2.0
 
 interface ParticleUniforms {
   uTime: { value: number }
@@ -23,14 +29,15 @@ interface ParticleUniforms {
   uSize: { value: number }
   uNoiseFreq: { value: number }
   uNoiseAmp: { value: number }
-  [key: string]: { value: number }
+  uColorStart: { value: Color }
+  uColorEnd: { value: Color }
+  [key: string]: { value: number | Color }
 }
 
 const generateParticleData = () => {
   const positions = new Float32Array(PARTICLE_COUNT * 3)
   const initialPositions = new Float32Array(PARTICLE_COUNT * 3)
-  const colors = new Float32Array(PARTICLE_COUNT * 3)
-  const tempColor = new Color()
+  const randoms = new Float32Array(PARTICLE_COUNT)
 
   for (let i = 0; i < PARTICLE_COUNT; i++) {
     const i3 = i * 3
@@ -47,13 +54,10 @@ const generateParticleData = () => {
     initialPositions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta)
     initialPositions[i3 + 2] = r * Math.cos(phi)
 
-    tempColor.copy(COLOR_START).lerp(COLOR_END, Math.random())
-    colors[i3] = tempColor.r
-    colors[i3 + 1] = tempColor.g
-    colors[i3 + 2] = tempColor.b
+    randoms[i] = Math.random()
   }
 
-  return { positions, initialPositions, colors }
+  return { positions, initialPositions, randoms }
 }
 
 const pointsRef = shallowRef<Points | null>(null)
@@ -61,7 +65,17 @@ const materialRef = shallowRef<ShaderMaterial | null>(null)
 
 const { onBeforeRender } = useLoop()
 const { isOpeningComplete, isOpeningAnimating } = useAppState()
-const { positions, initialPositions, colors } = generateParticleData()
+const route = useRoute()
+
+const { positions, initialPositions, randoms } = generateParticleData()
+
+const getBasePath = (path?: string): string => {
+  if (!path || path === '/') return '/'
+  return `/${path.split('/')[1]}`
+}
+
+const initialBasePath = getBasePath(route.path)
+const initialColors = PAGE_COLORS[initialBasePath] || DEFAULT_COLORS
 
 const shaderUniforms: ParticleUniforms = {
   uTime: { value: 0 },
@@ -69,6 +83,8 @@ const shaderUniforms: ParticleUniforms = {
   uSize: { value: PARTICLE_BASE_SIZE },
   uNoiseFreq: { value: NOISE_FREQUENCY },
   uNoiseAmp: { value: NOISE_AMPLITUDE },
+  uColorStart: { value: new Color(initialColors.start) },
+  uColorEnd: { value: new Color(initialColors.end) },
 }
 
 const vertexShader = `
@@ -77,14 +93,16 @@ const vertexShader = `
   uniform float uSize;
   uniform float uNoiseFreq;
   uniform float uNoiseAmp;
+  uniform vec3 uColorStart;
+  uniform vec3 uColorEnd;
 
   attribute vec3 aInitialPosition;
-  attribute vec3 color;
+  attribute float aRandom;
 
   varying vec3 vColor;
 
   void main() {
-    vColor = color;
+    vColor = mix(uColorStart, uColorEnd, aRandom);
 
     vec3 posInit = aInitialPosition;
     float noise = sin(posInit.x * uNoiseFreq + uTime * 2.0) * cos(posInit.y * uNoiseFreq + uTime * 2.0) * uNoiseAmp;
@@ -107,10 +125,39 @@ const fragmentShader = `
     if (dist > 0.5) discard;
 
     float alpha = smoothstep(0.5, 0.1, dist);
-
     gl_FragColor = vec4(vColor, alpha);
   }
 `
+
+watch(
+  () => route.path,
+  (newPath, oldPath) => {
+    if (!oldPath) return
+
+    const basePath = getBasePath(newPath)
+    const targetColors = PAGE_COLORS[basePath] || DEFAULT_COLORS
+
+    const targetStart = new Color(targetColors.start)
+    const targetEnd = new Color(targetColors.end)
+
+    gsap.to(shaderUniforms.uColorStart.value, {
+      r: targetStart.r,
+      g: targetStart.g,
+      b: targetStart.b,
+      duration: ANIMATION_DURATION,
+      ease: 'power2.inOut',
+    })
+
+    gsap.to(shaderUniforms.uColorEnd.value, {
+      r: targetEnd.r,
+      g: targetEnd.g,
+      b: targetEnd.b,
+      duration: ANIMATION_DURATION,
+      ease: 'power2.inOut',
+    })
+  },
+  { immediate: true }
+)
 
 watch(isOpeningAnimating, (isAnimating) => {
   if (isAnimating && materialRef.value) {
@@ -134,20 +181,16 @@ onBeforeRender(({ elapsed, delta }) => {
 })
 
 onUnmounted(() => {
-  if (materialRef.value) {
-    materialRef.value.dispose()
-  }
-
-  if (pointsRef.value?.geometry) {
-    pointsRef.value.geometry.dispose()
-  }
+  if (materialRef.value) materialRef.value.dispose()
+  if (pointsRef.value?.geometry) pointsRef.value.geometry.dispose()
 })
 </script>
 
 <template>
   <TresPoints ref="pointsRef">
-    <TresBufferGeometry :position="[positions, 3]" :color="[colors, 3]">
+    <TresBufferGeometry :position="[positions, 3]">
       <TresBufferAttribute attach="attributes-aInitialPosition" :args="[initialPositions, 3]" />
+      <TresBufferAttribute attach="attributes-aRandom" :args="[randoms, 1]" />
     </TresBufferGeometry>
 
     <TresShaderMaterial
