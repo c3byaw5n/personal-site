@@ -37,6 +37,14 @@ export default defineNuxtConfig({
       contentSecurityPolicy: {
         'frame-ancestors': ["'none'"],
         'img-src': ["'self'", 'data:', 'blob:', 'https:'],
+        'script-src': [
+          "'self'",
+          'https:',
+          "'unsafe-inline'",
+          "'strict-dynamic'",
+          "'nonce-{{nonce}}'",
+          "'wasm-unsafe-eval'",
+        ],
       },
     },
   },
