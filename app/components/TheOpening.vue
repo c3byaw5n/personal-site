@@ -20,6 +20,8 @@ const handleInteraction = (): void => {
 
   if (!containerRef.value) return finalizeOpening()
 
+  const mobile = isMobile()
+
   gsap.to(containerRef.value, {
     scale: ANIMATION_SCALE,
     duration: ANIMATION_DURATION,
@@ -28,7 +30,7 @@ const handleInteraction = (): void => {
 
   gsap.to(containerRef.value, {
     opacity: 0,
-    filter: 'blur(4px)',
+    filter: mobile ? 'none' : 'blur(4px)',
     duration: ANIMATION_DURATION * 0.8,
     ease: 'power1.out',
   })
