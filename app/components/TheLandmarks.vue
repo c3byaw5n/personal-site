@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { shallowRef, watch } from 'vue'
 import type { Mesh, MeshBasicMaterial } from 'three'
 import gsap from 'gsap'
 
