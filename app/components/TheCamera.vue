@@ -32,11 +32,6 @@ const { isOpeningComplete, isOpeningAnimating } = useAppState()
 
 let activeTimeline: gsap.core.Timeline | gsap.core.Tween | null = null
 
-const getBasePath = (path?: string): string => {
-  if (!path || path === '/') return '/'
-  return `/${path.split('/')[1]}`
-}
-
 const syncCamera = (state: TimelineState) => {
   if (!cameraRef.value) return
   cameraRef.value.position.set(state.x, state.y, state.z)

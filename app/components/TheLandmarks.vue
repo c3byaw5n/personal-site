@@ -20,11 +20,6 @@ const worksMeshRef = shallowRef<Mesh | null>(null)
 const route = useRoute()
 const { onBeforeRender } = useLoop()
 
-const getBasePath = (path?: string): string => {
-  if (!path || path === '/') return '/'
-  return `/${path.split('/')[1]}`
-}
-
 const initialBasePath = getBasePath(route.path)
 
 const animateOpacity = (material: MeshBasicMaterial | null, isActive: boolean) => {

@@ -15,11 +15,6 @@ const navItems: NavItem[] = [
 
 const route = useRoute()
 
-const getBasePath = (path?: string) => {
-  if (!path || path === '/') return '/'
-  return `/${path.split('/')[1]}`
-}
-
 const isActive = (path: string): boolean => {
   if (path.startsWith('http')) return false
   const basePath = getBasePath(route.path)
