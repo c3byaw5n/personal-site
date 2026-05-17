@@ -21,6 +21,7 @@
     "better-sqlite3": "^12.9.0",
     "gsap": "^3.15.0",
     "nuxt": "^4.4.4",
+    "nuxt-security": "^2.6.0",
     "tailwindcss": "^4.2.4",
     "three": "^0.184.0",
     "vue": "^3.5.33",

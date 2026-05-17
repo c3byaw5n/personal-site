@@ -25,7 +25,17 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxtjs/sitemap',
     '@tresjs/nuxt',
+    'nuxt-security',
   ],
+  security: {
+    headers: {
+      crossOriginEmbedderPolicy: 'unsafe-none',
+      contentSecurityPolicy: {
+        'frame-ancestors': ["'none'"],
+        'img-src': ["'self'", 'data:', 'blob:', 'https:'],
+      },
+    },
+  },
   site: {
     url: 'https://haruhi-arai.me',
     name: '荒井 春陽',
