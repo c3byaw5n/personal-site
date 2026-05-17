@@ -12,12 +12,9 @@ const CAMERA_POSITIONS: Record<string, { x: number; y: number; z: number }> = {
 const ANIMATION_DURATION = 2.0
 const OPENING_DURATION = 3.5
 
-const CAMERA_FOV = 45
-const CAMERA_ASPECT = 1
-const CAMERA_NEAR = 0.1
-const CAMERA_FAR = 1000
-const CAMERA_TARGET = new Vector3(0, 0, 0)
+const CAMERA_ARGS: [number, number, number, number] = [45, 1, 0.1, 1000]
 
+const CAMERA_TARGET = new Vector3(0, 0, 0)
 const MAX_BANK_ANGLE = 0.15
 const SPIN_ROTATIONS = Math.PI
 
@@ -40,6 +37,13 @@ const getBasePath = (path?: string): string => {
   return `/${path.split('/')[1]}`
 }
 
+const syncCamera = (state: TimelineState) => {
+  if (!cameraRef.value) return
+  cameraRef.value.position.set(state.x, state.y, state.z)
+  cameraRef.value.up.set(Math.sin(state.angle), Math.cos(state.angle), 0)
+  cameraRef.value.lookAt(CAMERA_TARGET)
+}
+
 const updateCamera = (path: string, isImmediate = false): void => {
   const target = CAMERA_POSITIONS[path] || CAMERA_POSITIONS['/']
 
@@ -50,72 +54,45 @@ const updateCamera = (path: string, isImmediate = false): void => {
   }
 
   if (isImmediate) {
-    cameraRef.value.position.set(target.x, target.y, target.z)
-    cameraRef.value.up.set(0, 1, 0)
-    cameraRef.value.lookAt(CAMERA_TARGET)
+    syncCamera({ ...target, angle: 0 })
     stopAnimating()
-  } else {
-    startAnimating()
+    return
+  }
 
-    const currentPos = cameraRef.value.position
-    const direction = target.x > currentPos.x ? -1 : 1
+  startAnimating()
 
-    const state: TimelineState = {
-      x: currentPos.x,
-      y: currentPos.y,
-      z: currentPos.z,
-      angle: 0,
-    }
+  const currentPos = cameraRef.value.position
+  const direction = target.x > currentPos.x ? -1 : 1
 
-    const tl = gsap.timeline({
-      onUpdate: () => {
-        if (!cameraRef.value) return
-        cameraRef.value.position.set(state.x, state.y, state.z)
-        cameraRef.value.up.set(Math.sin(state.angle), Math.cos(state.angle), 0)
-        cameraRef.value.lookAt(CAMERA_TARGET)
-      },
+  const state: TimelineState = {
+    x: currentPos.x,
+    y: currentPos.y,
+    z: currentPos.z,
+    angle: 0,
+  }
+
+  const splitTime = ANIMATION_DURATION * 0.4
+
+  activeTimeline = gsap
+    .timeline({
+      onUpdate: () => syncCamera(state),
       onComplete: () => {
-        cameraRef.value?.up.set(0, 1, 0)
-        cameraRef.value?.lookAt(CAMERA_TARGET)
+        syncCamera({ ...target, angle: 0 })
         stopAnimating()
         activeTimeline = null
       },
     })
-
-    activeTimeline = tl
-
-    tl.to(
+    .to(
       state,
-      {
-        x: target.x,
-        y: target.y,
-        z: target.z,
-        duration: ANIMATION_DURATION,
-        ease: 'power2.inOut',
-      },
+      { x: target.x, y: target.y, z: target.z, duration: ANIMATION_DURATION, ease: 'power2.inOut' },
       0
     )
-
-    tl.to(
+    .to(state, { angle: MAX_BANK_ANGLE * direction, duration: splitTime, ease: 'power1.out' }, 0)
+    .to(
       state,
-      {
-        angle: MAX_BANK_ANGLE * direction,
-        duration: ANIMATION_DURATION * 0.4,
-        ease: 'power1.out',
-      },
-      0
+      { angle: 0, duration: ANIMATION_DURATION - splitTime, ease: 'power1.inOut' },
+      splitTime
     )
-
-    tl.to(
-      state,
-      {
-        angle: 0,
-        duration: ANIMATION_DURATION * 0.6,
-        ease: 'power1.inOut',
-      },
-      ANIMATION_DURATION * 0.4
-    )
-  }
 }
 
 watch(
@@ -123,9 +100,7 @@ watch(
   (newPath, oldPath) => {
     const newBasePath = getBasePath(newPath)
     const oldBasePath = getBasePath(oldPath)
-    const isSameSection = newBasePath === oldBasePath
-
-    updateCamera(newBasePath, isSameSection)
+    updateCamera(newBasePath, newBasePath === oldBasePath)
   }
 )
 
@@ -148,15 +123,9 @@ watch(isOpeningAnimating, (isAnimating) => {
       angle: 0,
       duration: OPENING_DURATION,
       ease: 'power3.inOut',
-      onUpdate: () => {
-        if (!cameraRef.value) return
-        cameraRef.value.position.set(state.x, state.y, state.z)
-        cameraRef.value.up.set(Math.sin(state.angle), Math.cos(state.angle), 0)
-        cameraRef.value.lookAt(CAMERA_TARGET)
-      },
+      onUpdate: () => syncCamera(state),
       onComplete: () => {
-        cameraRef.value?.up.set(0, 1, 0)
-        cameraRef.value?.lookAt(CAMERA_TARGET)
+        syncCamera({ ...target, angle: 0 })
         stopAnimating()
         activeTimeline = null
       },
@@ -168,11 +137,7 @@ onMounted(() => {
   const basePath = getBasePath(route.path)
 
   if (!isOpeningComplete.value && basePath === '/') {
-    if (cameraRef.value) {
-      cameraRef.value.position.set(0, 0, 40)
-      cameraRef.value.up.set(Math.sin(SPIN_ROTATIONS), Math.cos(SPIN_ROTATIONS), 0)
-      cameraRef.value.lookAt(CAMERA_TARGET)
-    }
+    syncCamera({ x: 0, y: 0, z: 40, angle: SPIN_ROTATIONS })
   } else {
     updateCamera(basePath, true)
   }
@@ -186,8 +151,5 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <TresPerspectiveCamera
-    ref="cameraRef"
-    :args="[CAMERA_FOV, CAMERA_ASPECT, CAMERA_NEAR, CAMERA_FAR]"
-  />
+  <TresPerspectiveCamera ref="cameraRef" :args="CAMERA_ARGS" />
 </template>
