@@ -16,6 +16,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   css: ['~/assets/css/main.css'],
   devtools: { enabled: true },
+  icon: {
+    mode: 'css',
+    cssLayer: 'base',
+  },
   modules: [
     '@nuxt/content',
     '@nuxt/eslint',
@@ -25,7 +29,25 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxtjs/sitemap',
     '@tresjs/nuxt',
+    'nuxt-security',
   ],
+  security: {
+    headers: {
+      crossOriginEmbedderPolicy: 'unsafe-none',
+      contentSecurityPolicy: {
+        'frame-ancestors': ["'none'"],
+        'img-src': ["'self'", 'data:', 'blob:', 'https:'],
+        'script-src': [
+          "'self'",
+          'https:',
+          "'unsafe-inline'",
+          "'strict-dynamic'",
+          "'nonce-{{nonce}}'",
+          "'wasm-unsafe-eval'",
+        ],
+      },
+    },
+  },
   site: {
     url: 'https://haruhi-arai.me',
     name: '荒井 春陽',

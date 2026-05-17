@@ -1,12 +1,29 @@
 <script setup lang="ts">
 import type { NuxtError } from '#app'
 
-defineProps<{ error: NuxtError }>()
+const props = defineProps<{ error: NuxtError }>()
 
 useSeoMeta({
   title: 'Error',
   description: 'エラーが発生しました。',
+  robots: 'noindex',
 })
+
+const { setOpeningComplete } = useAppState()
+
+onMounted(() => {
+  setOpeningComplete(true)
+})
+
+const is404 = computed(() => props.error?.statusCode === 404 || props.error?.status === 404)
+
+const errorTitle = computed(() => (is404.value ? 'Page Not Found' : 'Internal Server Error'))
+
+const errorMessage = computed(() =>
+  is404.value
+    ? 'お探しのページは、移動したか削除された可能性があります。'
+    : '予期せぬエラーが発生しちゃいました。'
+)
 
 const handleError = () => clearError({ redirect: '/' })
 </script>
@@ -15,21 +32,20 @@ const handleError = () => clearError({ redirect: '/' })
   <NuxtLayout>
     <TheContentContainer>
       <div class="flex flex-col items-center">
-        <div class="mb-12 flex h-32 w-32 items-center justify-center">
+        <div class="flex h-24 w-24 justify-center">
           <Icon name="lucide:alert-circle" class="text-6xl text-fuchsia-500 opacity-80" />
         </div>
 
-        <h1 class="mb-6 text-3xl font-bold tracking-[0.3em] uppercase">Error {{ error.status }}</h1>
+        <h1 class="mb-6 text-3xl font-bold tracking-[0.3em] uppercase">
+          Error {{ error?.statusCode || error?.status || '500' }}
+        </h1>
 
         <h2 class="mb-8 text-xs font-bold tracking-[0.3em] text-fuchsia-500 uppercase">
-          {{ error?.status === 404 ? 'Page Not Found' : 'Internal Server Error' }}
+          {{ errorTitle }}
         </h2>
 
-        <div class="mb-12 max-w-2xl text-lg leading-relaxed tracking-widest">
-          <p v-if="error?.status === 404">
-            お探しのページは、移動したか削除された可能性があります。
-          </p>
-          <p v-else>予期せぬエラーが発生しちゃいました。</p>
+        <div class="mb-8 max-w-2xl text-center text-lg leading-relaxed tracking-widest">
+          <p>{{ errorMessage }}</p>
         </div>
 
         <button
