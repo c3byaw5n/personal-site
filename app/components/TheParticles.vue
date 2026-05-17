@@ -4,7 +4,6 @@ import type { Points, ShaderMaterial, IUniform } from 'three'
 import gsap from 'gsap'
 
 const PARTICLE_COUNT = 10000
-const CLUSTER_RADIUS = 1.0
 const SPREAD_RADIUS = 50.0
 const PARTICLE_BASE_SIZE = 50.0
 
@@ -14,15 +13,9 @@ const ROTATION_SPEED_X = 0.01
 const COLOR_START = new Color('#ff80ab')
 const COLOR_END = new Color('#c51162')
 
-const NOISE_FREQUENCY = 5.0
-const NOISE_AMPLITUDE = 0.15
-
 const VERTEX_SHADER = `
-  uniform float uTime;
   uniform float uProgress;
   uniform float uSize;
-  uniform float uNoiseFreq;
-  uniform float uNoiseAmp;
 
   attribute vec3 aInitialPosition;
   attribute vec3 color;
@@ -32,16 +25,13 @@ const VERTEX_SHADER = `
   void main() {
     vColor = color;
 
-    vec3 posInit = aInitialPosition;
-    float noise = sin(posInit.x * uNoiseFreq + uTime * 2.0) * cos(posInit.y * uNoiseFreq + uTime * 2.0) * uNoiseAmp;
-    posInit += normalize(posInit) * noise;
-
-    vec3 finalPos = mix(posInit, position, uProgress);
+    vec3 finalPos = mix(aInitialPosition, position, uProgress);
 
     vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
 
-    gl_PointSize = uSize * (1.0 / -mvPosition.z);
+    float visibility = smoothstep(0.0, 0.05, uProgress);
+    gl_PointSize = uSize * (1.0 / -mvPosition.z) * visibility;
   }
 `
 
@@ -59,11 +49,8 @@ const FRAGMENT_SHADER = `
 `
 
 interface ParticleUniforms {
-  uTime: IUniform<number>
   uProgress: IUniform<number>
   uSize: IUniform<number>
-  uNoiseFreq: IUniform<number>
-  uNoiseAmp: IUniform<number>
   [key: string]: IUniform<number>
 }
 
@@ -80,13 +67,9 @@ const generateParticleData = () => {
     positions[i3 + 1] = (Math.random() - 0.5) * SPREAD_RADIUS
     positions[i3 + 2] = (Math.random() - 0.5) * SPREAD_RADIUS
 
-    const phi = Math.acos(-1 + (2 * i) / PARTICLE_COUNT)
-    const theta = Math.sqrt(PARTICLE_COUNT * Math.PI) * phi
-    const r = CLUSTER_RADIUS * Math.cbrt(Math.random())
-
-    initialPositions[i3] = r * Math.sin(phi) * Math.cos(theta)
-    initialPositions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta)
-    initialPositions[i3 + 2] = r * Math.cos(phi)
+    initialPositions[i3] = 0
+    initialPositions[i3 + 1] = 0
+    initialPositions[i3 + 2] = 0
 
     tempColor.copy(COLOR_START).lerp(COLOR_END, Math.random())
     colors[i3] = tempColor.r
@@ -105,11 +88,8 @@ const { isOpeningComplete, isOpeningAnimating } = useAppState()
 const { positions, initialPositions, colors } = generateParticleData()
 
 const shaderUniforms: ParticleUniforms = {
-  uTime: { value: 0 },
   uProgress: { value: isOpeningComplete.value ? 1.0 : 0.0 },
   uSize: { value: PARTICLE_BASE_SIZE },
-  uNoiseFreq: { value: NOISE_FREQUENCY },
-  uNoiseAmp: { value: NOISE_AMPLITUDE },
 }
 
 watch(isOpeningAnimating, (isAnimating) => {
@@ -122,11 +102,7 @@ watch(isOpeningAnimating, (isAnimating) => {
   }
 })
 
-onBeforeRender(({ elapsed, delta }) => {
-  if (materialRef.value) {
-    shaderUniforms.uTime.value = elapsed
-  }
-
+onBeforeRender(({ delta }) => {
   if (pointsRef.value) {
     pointsRef.value.rotation.y += delta * ROTATION_SPEED_Y
     pointsRef.value.rotation.x += delta * ROTATION_SPEED_X

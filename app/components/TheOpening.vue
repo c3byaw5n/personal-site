@@ -20,10 +20,16 @@ const handleInteraction = (): void => {
   if (containerRef.value) {
     gsap.to(containerRef.value, {
       scale: ANIMATION_SCALE,
-      opacity: 0,
       duration: ANIMATION_DURATION,
       ease: 'power2.in',
       onComplete: finalizeOpening,
+    })
+
+    gsap.to(containerRef.value, {
+      opacity: 0,
+      filter: 'blur(4px)',
+      duration: ANIMATION_DURATION * 0.8,
+      ease: 'power1.out',
     })
   } else {
     finalizeOpening()
@@ -67,8 +73,9 @@ onUnmounted(() => {
     @click="handleInteraction"
     @touchstart.passive="handleInteraction"
   >
+    <p class="mb-6 text-3xl tracking-widest">Personal Site</p>
     <p
-      class="mt-20 text-xs tracking-[0.3em] text-fuchsia-700/70 md:mt-30 md:text-sm"
+      class="text-xs tracking-[0.3em] text-fuchsia-700/70 md:text-sm"
       :class="{ 'animate-pulse': !isOpeningAnimating }"
     >
       CLICK, TAP OR PRESS ENTER
