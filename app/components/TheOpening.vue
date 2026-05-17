@@ -3,6 +3,7 @@ import gsap from 'gsap'
 
 const ANIMATION_SCALE = 50
 const ANIMATION_DURATION = 1.5
+const TOTAL_WAIT_TIME = 2.5
 
 const containerRef = shallowRef<HTMLElement | null>(null)
 const { isOpeningAnimating, setOpeningAnimating, setOpeningComplete } = useAppState()
@@ -17,23 +18,22 @@ const handleInteraction = (): void => {
 
   setOpeningAnimating(true)
 
-  if (containerRef.value) {
-    gsap.to(containerRef.value, {
-      scale: ANIMATION_SCALE,
-      duration: ANIMATION_DURATION,
-      ease: 'power2.in',
-      onComplete: finalizeOpening,
-    })
+  if (!containerRef.value) return finalizeOpening()
 
-    gsap.to(containerRef.value, {
-      opacity: 0,
-      filter: 'blur(4px)',
-      duration: ANIMATION_DURATION * 0.8,
-      ease: 'power1.out',
-    })
-  } else {
-    finalizeOpening()
-  }
+  gsap.to(containerRef.value, {
+    scale: ANIMATION_SCALE,
+    duration: ANIMATION_DURATION,
+    ease: 'power2.in',
+  })
+
+  gsap.to(containerRef.value, {
+    opacity: 0,
+    filter: 'blur(4px)',
+    duration: ANIMATION_DURATION * 0.8,
+    ease: 'power1.out',
+  })
+
+  gsap.delayedCall(TOTAL_WAIT_TIME, finalizeOpening)
 }
 
 const handleGlobalKeydown = (event: KeyboardEvent) => {
@@ -42,9 +42,7 @@ const handleGlobalKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Enter') {
     event.preventDefault()
     handleInteraction()
-  }
-
-  if (event.key === 'Tab') {
+  } else if (event.key === 'Tab') {
     event.preventDefault()
   }
 }
@@ -52,9 +50,7 @@ const handleGlobalKeydown = (event: KeyboardEvent) => {
 onMounted(() => {
   window.addEventListener('keydown', handleGlobalKeydown)
 
-  if (containerRef.value) {
-    containerRef.value.focus()
-  }
+  containerRef.value?.focus()
 })
 
 onUnmounted(() => {
@@ -66,10 +62,10 @@ onUnmounted(() => {
   <div
     ref="containerRef"
     role="button"
-    tabindex="0"
+    :tabindex="isOpeningAnimating ? -1 : 0"
     aria-label="Enter personal site"
-    class="fixed inset-0 z-50 flex cursor-pointer flex-col items-center justify-center focus:outline-none"
-    :class="isOpeningAnimating ? 'pointer-events-none' : ''"
+    class="fixed inset-0 z-50 flex flex-col items-center justify-center focus:outline-none"
+    :class="isOpeningAnimating ? 'cursor-default touch-none' : 'cursor-pointer'"
     @click="handleInteraction"
     @touchstart.passive="handleInteraction"
   >
