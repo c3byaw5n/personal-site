@@ -20,7 +20,7 @@ useSeoMeta({
 
 const { data: worksData } = await useAsyncData('works', () => queryCollection('works').first())
 
-const works = computed(() => worksData.value?.works || [])
+const works = computed<WorkItem[]>(() => (worksData.value?.works as WorkItem[]) || [])
 </script>
 
 <template>

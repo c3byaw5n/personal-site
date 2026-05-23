@@ -9,22 +9,6 @@ interface TechItem {
   isSpecial?: boolean
 }
 
-interface WorkItem {
-  title: string
-  description: string
-  image: string
-  github?: string
-  url?: string
-}
-
-interface BlogPost {
-  title: string
-  description: string
-  date: string
-  path: string
-  tags?: string[]
-}
-
 const MAX_PREVIEW_COUNT = 3
 
 const techStack: TechItem[] = [

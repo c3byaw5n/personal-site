@@ -20,6 +20,9 @@ export default defineNuxtConfig({
     mode: 'css',
     cssLayer: 'base',
   },
+  imports: {
+    dirs: ['types', 'types/**'],
+  },
   modules: [
     '@nuxt/content',
     '@nuxt/eslint',

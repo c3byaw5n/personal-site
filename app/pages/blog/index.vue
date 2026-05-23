@@ -17,12 +17,14 @@ useSeoMeta({
   twitterDescription: seoDescription,
 })
 
-const { data: allPosts } = await useAsyncData('blog-list', () =>
+const { data: rawPosts } = await useAsyncData('blog-list', () =>
   queryCollection('blog')
     .select('path', 'title', 'description', 'date', 'tags')
     .order('date', 'DESC')
     .all()
 )
+
+const allPosts = computed<BlogPost[]>(() => (rawPosts.value as BlogPost[]) || [])
 
 const searchQuery = ref('')
 const selectedTag = ref<string | null>(null)
@@ -30,15 +32,13 @@ const isTagsExpanded = ref(false)
 const INITIAL_DISPLAY_COUNT = 10
 const displayCount = ref(INITIAL_DISPLAY_COUNT)
 
-const availableTags = computed(() => {
-  if (!allPosts.value) return []
-
+const availableTags = computed<string[]>(() => {
   const tags = allPosts.value.flatMap((post) => post.tags || [])
   return Array.from(new Set(tags))
 })
 
-const filteredPosts = computed(() => {
-  let posts = allPosts.value || []
+const filteredPosts = computed<BlogPost[]>(() => {
+  let posts = allPosts.value
 
   if (selectedTag.value) {
     posts = posts.filter((post) => post.tags?.includes(selectedTag.value!))
@@ -55,7 +55,7 @@ const filteredPosts = computed(() => {
   return posts
 })
 
-const displayedPosts = computed(() => {
+const displayedPosts = computed<BlogPost[]>(() => {
   return filteredPosts.value.slice(0, displayCount.value)
 })
 
