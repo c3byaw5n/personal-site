@@ -10,8 +10,8 @@ const PARTICLE_BASE_SIZE = 50.0
 const ROTATION_SPEED_Y = 0.02
 const ROTATION_SPEED_X = 0.01
 
-const COLOR_START = new Color('#ff80ab')
-const COLOR_END = new Color('#f50057')
+const COLOR_START = new Color('#c51162')
+const COLOR_END = new Color('#ff80ab')
 
 const VERTEX_SHADER = `
   uniform float uProgress;
