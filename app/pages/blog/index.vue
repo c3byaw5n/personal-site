@@ -161,9 +161,16 @@ watch([searchQuery, selectedTag], () => {
         </Transition>
       </div>
 
-      <div v-if="displayedPosts.length > 0" class="w-full space-y-12">
-        <article v-for="post in displayedPosts" :key="post.path" class="group">
-          <NuxtLink :to="post.path" class="block space-y-3">
+      <div v-if="displayedPosts.length > 0" class="flex w-full flex-col">
+        <article
+          v-for="post in displayedPosts"
+          :key="post.path"
+          class="border-b border-fuchsia-900/20 last:border-none"
+        >
+          <NuxtLink
+            :to="post.path"
+            class="group my-2 block space-y-2 rounded-2xl p-4 transition-colors duration-300 hover:bg-fuchsia-50/60"
+          >
             <time class="text-xs font-bold tracking-[0.2em] text-fuchsia-900/60">
               {{ formatDate(post.date) }}
             </time>
