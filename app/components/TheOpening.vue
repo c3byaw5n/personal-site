@@ -3,80 +3,85 @@ import gsap from 'gsap'
 
 const ANIMATION_SCALE = 50
 const ANIMATION_DURATION = 1.5
-const TOTAL_WAIT_TIME = 2.5
+const AUTO_START_DELAY = 1.2
 
 const containerRef = shallowRef<HTMLElement | null>(null)
-const { isOpeningAnimating, setOpeningAnimating, setOpeningComplete } = useAppState()
+const textRef = shallowRef<HTMLElement | null>(null)
+
+const { isOpeningComplete, isOpeningAnimating, setOpeningAnimating, setOpeningComplete } =
+  useAppState()
+
+let gsapCtx: gsap.Context
 
 const finalizeOpening = (): void => {
   setOpeningComplete(true)
   setOpeningAnimating(false)
 }
 
-const handleInteraction = (): void => {
-  if (isOpeningAnimating.value) return
+const startOpeningAnimation = (): void => {
+  if (isOpeningAnimating.value || !containerRef.value) return
 
   setOpeningAnimating(true)
 
-  if (!containerRef.value) return finalizeOpening()
-
   const mobile = isMobile()
 
-  gsap.to(containerRef.value, {
-    scale: ANIMATION_SCALE,
-    duration: ANIMATION_DURATION,
-    ease: 'power2.in',
+  const tl = gsap.timeline({
+    onComplete: finalizeOpening,
   })
 
-  gsap.to(containerRef.value, {
-    opacity: 0,
-    filter: mobile ? 'none' : 'blur(4px)',
-    duration: ANIMATION_DURATION * 0.8,
-    ease: 'power1.out',
-  })
-
-  gsap.delayedCall(TOTAL_WAIT_TIME, finalizeOpening)
-}
-
-const handleGlobalKeydown = (event: KeyboardEvent) => {
-  if (isOpeningAnimating.value) return
-
-  if (event.key === 'Enter') {
-    event.preventDefault()
-    handleInteraction()
-  } else if (event.key === 'Tab') {
-    event.preventDefault()
-  }
+  tl.to(
+    containerRef.value,
+    {
+      scale: ANIMATION_SCALE,
+      duration: ANIMATION_DURATION,
+      ease: 'power2.in',
+    },
+    0
+  ).to(
+    containerRef.value,
+    {
+      opacity: 0,
+      filter: mobile ? 'none' : 'blur(4px)',
+      duration: ANIMATION_DURATION * 0.8,
+      ease: 'power1.out',
+    },
+    0
+  )
 }
 
 onMounted(() => {
-  window.addEventListener('keydown', handleGlobalKeydown)
+  gsapCtx = gsap.context(() => {
+    if (textRef.value) {
+      gsap.fromTo(
+        textRef.value,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: AUTO_START_DELAY, ease: 'power2.out' }
+      )
+    }
 
-  containerRef.value?.focus()
+    gsap.delayedCall(AUTO_START_DELAY, () => {
+      if (!isOpeningAnimating.value && !isOpeningComplete.value) {
+        startOpeningAnimation()
+      }
+    })
+  })
 })
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleGlobalKeydown)
+  if (gsapCtx) {
+    gsapCtx.revert()
+  }
 })
 </script>
 
 <template>
   <div
     ref="containerRef"
-    role="button"
-    :tabindex="isOpeningAnimating ? -1 : 0"
-    aria-label="Enter personal site"
-    class="fixed inset-0 z-50 flex flex-col items-center justify-center focus:outline-none"
-    :class="isOpeningAnimating ? 'cursor-default touch-none' : 'cursor-pointer'"
-    @click="handleInteraction"
-    @touchstart.passive="handleInteraction"
+    aria-hidden="true"
+    class="fixed inset-0 z-50 flex cursor-default touch-none flex-col items-center justify-center focus:outline-none"
   >
-    <p class="mb-6 text-3xl tracking-widest">Personal Site</p>
-    <p
-      class="text-xs tracking-[0.3em] text-fuchsia-700/70 md:text-sm"
-      :class="{ 'animate-pulse': !isOpeningAnimating }"
-    >
-      CLICK, TAP OR PRESS ENTER
+    <p ref="textRef" class="text-3xl tracking-widest text-fuchsia-950 opacity-0 md:text-4xl">
+      Personal Site
     </p>
   </div>
 </template>
