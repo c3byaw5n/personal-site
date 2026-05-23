@@ -68,17 +68,6 @@ const loadMore = () => {
 watch([searchQuery, selectedTag], () => {
   displayCount.value = INITIAL_DISPLAY_COUNT
 })
-
-const dateFormatter = new Intl.DateTimeFormat('ja-JP', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-})
-
-const formatDate = (dateString?: string) => {
-  if (!dateString) return ''
-  return dateFormatter.format(new Date(dateString)).replace(/\//g, '.')
-}
 </script>
 
 <template>

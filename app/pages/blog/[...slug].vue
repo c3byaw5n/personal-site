@@ -28,17 +28,6 @@ useSeoMeta({
   twitterTitle: () => (post.value?.title ? `${post.value.title} | ${siteName}` : siteName),
   twitterDescription: () => post.value?.description,
 })
-
-const dateFormatter = new Intl.DateTimeFormat('ja-JP', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-})
-
-const formatDate = (dateString?: string) => {
-  if (!dateString) return ''
-  return dateFormatter.format(new Date(dateString)).replace(/\//g, '.')
-}
 </script>
 
 <template>
@@ -70,7 +59,7 @@ const formatDate = (dateString?: string) => {
       </header>
 
       <div
-        class="mx-auto prose max-w-none prose-fuchsia prose-headings:mt-12 prose-headings:font-bold prose-headings:tracking-widest prose-headings:text-fuchsia-950 prose-h1:text-2xl prose-p:leading-loose prose-p:tracking-wider prose-p:text-fuchsia-950/80 prose-a:text-fuchsia-600 prose-a:transition-colors prose-a:hover:text-fuchsia-800 prose-strong:text-fuchsia-950 prose-li:tracking-wider prose-li:text-fuchsia-950/80"
+        class="mx-auto prose max-w-none prose-fuchsia prose-headings:mt-12 prose-headings:font-bold prose-headings:tracking-widest prose-headings:text-fuchsia-950 prose-p:leading-loose prose-p:tracking-wider prose-p:text-fuchsia-950/80 prose-a:text-fuchsia-600 prose-a:transition-colors prose-a:hover:text-fuchsia-800 prose-strong:text-fuchsia-950 prose-li:tracking-wider prose-li:text-fuchsia-950/80"
       >
         <ContentRenderer :value="post" />
       </div>
