@@ -8,7 +8,8 @@ const { data: post } = await useAsyncData(`blog-${route.path}`, () =>
 if (!post.value) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'お探しの記事は見つかりませんでした',
+    statusMessage: 'Not Found',
+    message: 'お探しの記事は見つかりませんでした',
     fatal: true,
   })
 }

@@ -15,7 +15,7 @@ onMounted(() => {
   setOpeningComplete(true)
 })
 
-const is404 = computed(() => props.error?.statusCode === 404 || props.error?.status === 404)
+const is404 = computed(() => props.error?.status === 404)
 
 const errorTitle = computed(() => (is404.value ? 'Page Not Found' : 'Internal Server Error'))
 
@@ -37,7 +37,7 @@ const handleError = () => clearError({ redirect: '/' })
         </div>
 
         <h1 class="mb-6 text-3xl font-bold tracking-[0.3em] uppercase">
-          Error {{ error?.statusCode || error?.status || '500' }}
+          Error {{ error?.status || '500' }}
         </h1>
 
         <h2 class="mb-8 text-xs font-bold tracking-[0.3em] text-fuchsia-500 uppercase">
