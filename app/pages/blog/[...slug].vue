@@ -59,7 +59,7 @@ useSeoMeta({
       </header>
 
       <div
-        class="mx-auto prose max-w-none prose-fuchsia prose-headings:mt-12 prose-headings:font-bold prose-headings:tracking-widest prose-headings:text-fuchsia-950 prose-p:leading-loose prose-p:tracking-wider prose-p:text-fuchsia-950/80 prose-a:text-fuchsia-600 prose-a:transition-colors prose-a:hover:text-pink-600 prose-strong:text-fuchsia-950 prose-li:tracking-wider prose-li:text-fuchsia-950/80"
+        class="mx-auto prose max-w-none prose-fuchsia marker:text-fuchsia-700 prose-headings:mt-12 prose-headings:font-bold prose-headings:tracking-widest prose-headings:text-fuchsia-950 prose-p:leading-loose prose-p:tracking-wider prose-p:text-fuchsia-950/80 prose-a:text-fuchsia-600 prose-a:transition-colors prose-a:hover:text-pink-600 prose-strong:text-fuchsia-950 prose-code:rounded prose-code:bg-fuchsia-900/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono prose-code:text-fuchsia-900 prose-code:before:content-none prose-code:after:content-none prose-li:tracking-wider prose-li:text-fuchsia-950/80"
       >
         <ContentRenderer :value="post" />
       </div>
