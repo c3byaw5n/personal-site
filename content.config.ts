@@ -10,6 +10,7 @@ export default defineContentConfig({
       schema: z.object({
         date: z.string(),
         tags: z.array(z.string()).optional(),
+        ogImage: z.string().optional(),
         sitemap: defineSitemapSchema({
           z,
           name: 'blog',

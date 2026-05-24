@@ -12,4 +12,5 @@ export interface BlogPost {
   date: string
   path: string
   tags?: string[]
+  ogImage?: string
 }

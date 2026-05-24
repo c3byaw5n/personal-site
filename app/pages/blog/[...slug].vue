@@ -1,14 +1,15 @@
 <script setup lang="ts">
 const route = useRoute()
 
-const { data: post } = await useAsyncData(`blog-${route.path}`, () =>
-  queryCollection('blog').path(route.path).first()
+const { data: post } = await useAsyncData<BlogPost>(
+  `blog-${route.path}`,
+  () => queryCollection('blog').path(route.path).first() as Promise<BlogPost>
 )
 
 if (!post.value) {
   throw createError({
-    statusCode: 404,
-    statusMessage: 'Not Found',
+    status: 404,
+    statusText: 'Not Found',
     message: 'お探しの記事は見つかりませんでした',
     fatal: true,
   })
@@ -17,6 +18,7 @@ if (!post.value) {
 const siteConfig = useSiteConfig()
 
 const siteName = siteConfig.name
+const siteUrl = siteConfig.url
 
 useSeoMeta({
   title: () => post.value?.title,
@@ -25,9 +27,17 @@ useSeoMeta({
   ogTitle: () => (post.value?.title ? `${post.value.title} | ${siteName}` : siteName),
   ogDescription: () => post.value?.description,
   ogType: 'article',
+  ogImage: () => {
+    const imagePath = post.value?.ogImage || '/og-image.png'
+    return `${siteUrl}${imagePath}`
+  },
 
   twitterTitle: () => (post.value?.title ? `${post.value.title} | ${siteName}` : siteName),
   twitterDescription: () => post.value?.description,
+  twitterImage: () => {
+    const imagePath = post.value?.ogImage || '/og-image.png'
+    return `${siteUrl}${imagePath}`
+  },
 })
 </script>
 

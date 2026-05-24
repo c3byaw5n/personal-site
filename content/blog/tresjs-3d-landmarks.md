@@ -3,6 +3,7 @@ title: 'TresJS 入門：3Dオブジェクトの描画と質感'
 description: '本サイトの背景で回っている3Dランドマークの仕組みを、Mesh、Geometry、Materialの基礎から解説します。'
 date: '2026-05-24'
 tags: ['Nuxt', 'TresJS']
+ogImage: '/images/blog/tresjs-3d-landmarks/og-image.png'
 ---
 
 本サイトでは、BlogページやWorksページなど、ページごとに異なる3Dオブジェクト（ランドマーク）が背景でゆっくりと自転しています。
