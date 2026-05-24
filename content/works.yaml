@@ -1,6 +1,6 @@
 works:
-  - title: "Personal Site"
-    description: "現在のポートフォリオ兼技術ブログサイト。Nuxt 4、Three.js、GSAPを活用し、WebGLによる没入感のあるオープニングアニメーションを実装しています。"
+  - title: "Portfolio & Blog"
+    description: "本サイト。Nuxt、TresJS (Three.js)、GSAPを活用し、WebGLによる没入感のあるオープニングと、細部までこだわったカスタムUI（カーソル追従等）を実装したポートフォリオ兼技術ブログ。"
     image: "/og-image.png"
     github: "https://github.com/c3byaw5n/personal-site"
     url: "https://haruhi-arai.me"
