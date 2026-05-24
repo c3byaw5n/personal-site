@@ -186,7 +186,7 @@ watch([searchQuery, selectedTag], () => {
               <span
                 v-for="tag in post.tags"
                 :key="tag"
-                class="rounded border border-fuchsia-900/30 bg-fuchsia-50/50 px-2 py-0.5 text-[10px] tracking-widest text-fuchsia-900/60 uppercase"
+                class="rounded bg-fuchsia-100 px-2 py-0.5 text-[10px] tracking-widest text-fuchsia-600 uppercase"
               >
                 #{{ tag }}
               </span>
