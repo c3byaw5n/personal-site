@@ -105,7 +105,7 @@ watch([searchQuery, selectedTag], () => {
             v-if="!isTagsExpanded"
             aria-controls="tags-panel"
             :aria-expanded="isTagsExpanded"
-            class="group flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-xs tracking-widest text-fuchsia-900/80 transition-all hover:bg-fuchsia-50 hover:text-fuchsia-900"
+            class="group flex cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-xs tracking-widest text-fuchsia-900/80 transition-all hover:bg-fuchsia-50 hover:text-pink-600"
             @click="isTagsExpanded = true"
           >
             <Icon name="lucide:tag" class="text-sm transition-transform group-hover:scale-110" />
@@ -126,7 +126,7 @@ watch([searchQuery, selectedTag], () => {
                 :class="
                   selectedTag === null
                     ? 'border-fuchsia-900 bg-fuchsia-900 text-white'
-                    : 'border-fuchsia-900/20 text-fuchsia-900/60 hover:bg-fuchsia-50'
+                    : 'border-fuchsia-900/20 text-fuchsia-900/60 hover:bg-fuchsia-50 hover:text-pink-600'
                 "
                 @click="selectedTag = null"
               >
@@ -139,7 +139,7 @@ watch([searchQuery, selectedTag], () => {
                 :class="
                   selectedTag === tag
                     ? 'border-fuchsia-900 bg-fuchsia-900 text-white'
-                    : 'border-fuchsia-900/20 text-fuchsia-900/60 hover:bg-fuchsia-50'
+                    : 'border-fuchsia-900/20 text-fuchsia-900/60 hover:bg-fuchsia-50 hover:text-pink-600'
                 "
                 @click="selectedTag = tag"
               >
@@ -148,7 +148,7 @@ watch([searchQuery, selectedTag], () => {
             </div>
 
             <button
-              class="group flex cursor-pointer items-center gap-1 rounded-full px-5 py-2.5 text-xs font-bold tracking-widest text-fuchsia-900/80 transition-colors hover:bg-fuchsia-50 hover:text-fuchsia-900"
+              class="group flex cursor-pointer items-center gap-1 rounded-full px-5 py-2.5 text-xs font-bold tracking-widest text-fuchsia-900/80 transition-colors hover:bg-fuchsia-50 hover:text-pink-600"
               @click="isTagsExpanded = false"
             >
               閉じる

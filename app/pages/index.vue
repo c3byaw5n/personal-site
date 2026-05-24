@@ -66,12 +66,12 @@ const recentBlogs = computed<BlogPost[]>(() => (blogData.value as BlogPost[]) ||
 
           <h1 class="mb-4 text-4xl font-bold tracking-widest">荒井 春陽</h1>
 
-          <div class="mb-10 flex items-center gap-6 text-fuchsia-500">
+          <div class="mb-10 flex items-center gap-8 text-fuchsia-500">
             <a
               href="https://github.com/c3byaw5n"
               target="_blank"
               rel="noopener noreferrer"
-              class="transition-colors hover:text-fuchsia-700"
+              class="transition-colors hover:text-pink-600"
               aria-label="GitHub"
             >
               <Icon name="lucide:github" class="text-2xl" />
@@ -80,7 +80,7 @@ const recentBlogs = computed<BlogPost[]>(() => (blogData.value as BlogPost[]) ||
               href="https://x.com/あなたのユーザー名"
               target="_blank"
               rel="noopener noreferrer"
-              class="transition-colors hover:text-fuchsia-700"
+              class="transition-colors hover:text-pink-600"
               aria-label="X (Twitter)"
             >
               <Icon name="ri:twitter-x-fill" class="text-xl" />
@@ -95,7 +95,7 @@ const recentBlogs = computed<BlogPost[]>(() => (blogData.value as BlogPost[]) ||
             </h2>
 
             <div
-              class="prose text-lg prose-p:text-fuchsia-950/80 prose-a:text-fuchsia-600 prose-a:transition-colors prose-a:hover:text-fuchsia-800"
+              class="prose text-lg prose-p:text-fuchsia-950/80 prose-a:text-fuchsia-600 prose-a:transition-colors prose-a:hover:text-pink-600"
             >
               <p>2002年生まれ。青森県を拠点に活動するエンジニアです。</p>
               <p>
@@ -181,7 +181,7 @@ const recentBlogs = computed<BlogPost[]>(() => (blogData.value as BlogPost[]) ||
               </h2>
               <NuxtLink
                 to="/blog"
-                class="group flex cursor-pointer items-center text-xs font-bold tracking-widest text-fuchsia-400 transition-colors hover:text-fuchsia-600"
+                class="group flex cursor-pointer items-center text-xs font-bold tracking-widest text-fuchsia-400 transition-colors hover:text-pink-600"
               >
                 VIEW ALL
                 <Icon
@@ -200,7 +200,7 @@ const recentBlogs = computed<BlogPost[]>(() => (blogData.value as BlogPost[]) ||
               >
                 <div class="flex flex-col pr-4">
                   <h3
-                    class="mb-1.5 text-sm font-bold tracking-wide text-fuchsia-900 transition-colors group-hover:text-fuchsia-600"
+                    class="mb-1.5 text-sm font-bold tracking-wide text-fuchsia-900 transition-colors group-hover:text-fuchsia-700"
                   >
                     {{ post.title }}
                   </h3>
@@ -236,7 +236,7 @@ const recentBlogs = computed<BlogPost[]>(() => (blogData.value as BlogPost[]) ||
               </h2>
               <NuxtLink
                 to="/works"
-                class="group flex cursor-pointer items-center text-xs font-bold tracking-widest text-fuchsia-400 transition-colors hover:text-fuchsia-600"
+                class="group flex cursor-pointer items-center text-xs font-bold tracking-widest text-fuchsia-400 transition-colors hover:text-pink-600"
               >
                 VIEW ALL
                 <Icon
@@ -263,7 +263,9 @@ const recentBlogs = computed<BlogPost[]>(() => (blogData.value as BlogPost[]) ||
                     format="webp"
                   />
                 </div>
-                <h3 class="mb-2 text-sm font-bold tracking-wide text-fuchsia-900">
+                <h3
+                  class="mb-2 text-sm font-bold tracking-wide text-fuchsia-900 group-hover:text-fuchsia-700"
+                >
                   {{ work.title }}
                 </h3>
                 <p class="line-clamp-2 text-xs leading-relaxed text-fuchsia-950/70">

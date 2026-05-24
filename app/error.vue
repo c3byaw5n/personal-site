@@ -49,7 +49,7 @@ const handleError = () => clearError({ redirect: '/' })
         </div>
 
         <button
-          class="group flex cursor-pointer items-center gap-2 rounded-full px-8 py-3 text-sm font-bold tracking-widest text-fuchsia-900/60 transition-colors hover:bg-fuchsia-50 hover:text-fuchsia-900"
+          class="group flex cursor-pointer items-center gap-2 rounded-full px-8 py-3 text-sm font-bold tracking-widest text-fuchsia-900/60 transition-colors hover:bg-fuchsia-50 hover:text-pink-600"
           @click="handleError"
         >
           <Icon name="lucide:arrow-left" class="transition-transform group-hover:-translate-x-1" />

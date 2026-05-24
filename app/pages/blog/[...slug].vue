@@ -59,7 +59,7 @@ useSeoMeta({
       </header>
 
       <div
-        class="mx-auto prose max-w-none prose-fuchsia prose-headings:mt-12 prose-headings:font-bold prose-headings:tracking-widest prose-headings:text-fuchsia-950 prose-p:leading-loose prose-p:tracking-wider prose-p:text-fuchsia-950/80 prose-a:text-fuchsia-600 prose-a:transition-colors prose-a:hover:text-fuchsia-800 prose-strong:text-fuchsia-950 prose-li:tracking-wider prose-li:text-fuchsia-950/80"
+        class="mx-auto prose max-w-none prose-fuchsia prose-headings:mt-12 prose-headings:font-bold prose-headings:tracking-widest prose-headings:text-fuchsia-950 prose-p:leading-loose prose-p:tracking-wider prose-p:text-fuchsia-950/80 prose-a:text-fuchsia-600 prose-a:transition-colors prose-a:hover:text-pink-600 prose-strong:text-fuchsia-950 prose-li:tracking-wider prose-li:text-fuchsia-950/80"
       >
         <ContentRenderer :value="post" />
       </div>
@@ -67,7 +67,7 @@ useSeoMeta({
       <footer class="mt-30 text-center">
         <NuxtLink
           to="/blog"
-          class="group inline-flex items-center gap-2 text-sm font-bold tracking-widest text-fuchsia-900/60 transition-colors hover:text-fuchsia-900"
+          class="group inline-flex items-center gap-2 text-sm font-bold tracking-widest text-fuchsia-900/60 transition-colors hover:text-pink-600"
         >
           <Icon name="lucide:arrow-left" class="transition-transform group-hover:-translate-x-1" />
           BACK TO LIST
