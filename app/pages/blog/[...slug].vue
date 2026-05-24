@@ -42,7 +42,7 @@ useSeoMeta({
         </time>
 
         <h1
-          class="mb-6 text-2xl leading-tight font-bold tracking-wide text-fuchsia-950 md:text-3xl"
+          class="mb-6 text-3xl leading-tight font-bold tracking-wide text-fuchsia-950 md:text-4xl"
         >
           {{ post.title }}
         </h1>
