@@ -171,7 +171,7 @@ watch([searchQuery, selectedTag], () => {
             :to="post.path"
             class="group my-2 block space-y-2 rounded-2xl p-4 transition-colors duration-300 hover:bg-fuchsia-50/60"
           >
-            <time class="text-xs font-bold tracking-[0.2em] text-fuchsia-900/60">
+            <time class="text-xs font-bold tracking-[0.2em] text-fuchsia-400">
               {{ formatDate(post.date) }}
             </time>
             <h2
